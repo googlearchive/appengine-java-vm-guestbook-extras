@@ -39,16 +39,13 @@ The third stage shows how you can install Java 8 on your Managed VM instance via
 
 <h2 id="initialsetup">Initial Setup</h2>
 
-<p><strong>TBD: fix these links for external users</strong></p>
-
 <p>First, complete the following steps:</p>
 
 <ul>
 <li><a href="https://developers.google.com/appengine/docs/managed-vms/">Create your project</a> and have it enabled for Managed VMs.</li>
-<li>Install Docker in a local VM, as [described here](tbd: pointer to correct docs).
- <strong>Important Note: make sure your VirtualBox VM has 4Gb or RAM (or more). Otherwise, the Java runtime will NOT start.</strong>
- (<code>boot2docker init -m 4096</code>)</li>
-<li>Download and install <a href="https://console.developers.google.com/m/cloudstorage/b/managed-vm-sdk/o/managed-vm-sdk-latest.zip">the Preview build of the Google Cloud SDK</a>, as [described here](tbd: pointer to docs).</li>
+<li>Install Docker in a local VM, as <a href="http://goo.gl/bpxIuj">described here</a>.
+ <strong>Note: make sure your VirtualBox VM has 4Gb or RAM (or more). Otherwise, the Java runtime may have issues.</strong></li>
+<li>Download and install <a href="https://console.developers.google.com/m/cloudstorage/b/managed-vm-sdk/o/managed-vm-sdk-latest.zip">the Preview build of the Google Cloud SDK</a>, as <a href="http://goo.gl/bpxIuj">described here</a>.</li>
 </ul>
 
 <h3 id="gcloudauthentication">Gcloud Authentication</h3>
@@ -88,7 +85,7 @@ In this section of the tutorial, we&#8217;re going to use the java.awt.* package
 &lt;/manual-scaling&gt;
 </code></pre>
 
-<p>This indicates that this app module (the &#8216;default&#8217; module, in this case) is a Managed VMs module.</p>
+<p>This indicates that this app module (the &#8216;default&#8217; module, in this case) is a Managed VMs module, and indicates that one instance of this module version should be started.</p>
 
 <p>While you&#8217;re looking at <code>appengine-web.xml</code>, go ahead and change the <application> id to your app id. (This is not necessary for running locally using the development server, but is necessary for deployment).</p>
 

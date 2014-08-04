@@ -17,15 +17,12 @@ The third stage shows how you can install Java 8 on your Managed VM instance via
 
 ## Initial Setup ##
 
-**TBD: fix these links for external users**
-
 First, complete the following steps:
 
 - [Create your project](https://developers.google.com/appengine/docs/managed-vms/) and have it enabled for Managed VMs.
-- Install Docker in a local VM, as [described here](tbd: pointer to correct docs).
-  **Important Note: make sure your VirtualBox VM has 4Gb or RAM (or more). Otherwise, the Java runtime will NOT start.**
-  (`boot2docker init -m 4096`)
-- Download and install [the Preview build of the Google Cloud SDK](https://console.developers.google.com/m/cloudstorage/b/managed-vm-sdk/o/managed-vm-sdk-latest.zip),  as [described here](tbd: pointer to docs).
+- Install Docker in a local VM, as [described here](http://goo.gl/bpxIuj).
+  **Note: make sure your VirtualBox VM has 4Gb or RAM (or more). Otherwise, the Java runtime may have issues.**
+- Download and install [the Preview build of the Google Cloud SDK](https://console.developers.google.com/m/cloudstorage/b/managed-vm-sdk/o/managed-vm-sdk-latest.zip),  as [described here](http://goo.gl/bpxIuj).
 
 ### Gcloud Authentication ###
 
