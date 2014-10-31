@@ -74,7 +74,7 @@ While you're looking at `appengine-web.xml`,  go ahead and change the <applicati
 
 Before running the app, take a quick look at the  [stage1/src/main/java/com/google/appengine/demos/guestbook/CaptchaServlet.java](stage1/src/main/java/com/google/appengine/demos/guestbook/CaptchaServlet.java) servlet, which is new.  It uses the java.awt.* package to generate and serve up a 'captcha' image, putting the corresponding 'captcha code' in the `Session`. This is also a Servlet 3.1 annotated servlet, so no need to define it in the web.xml file.
 
-`guestbook.jsp` displays the captcha image, and asks the user to type in the code.  `SignGuestbookServlet` checks the submitted code against the value in the `Session`, and does not record the comment if the captcha code is incorrect.
+[stage1/src/main/webapp/guestbook.jsp](stage1/src/main/webapp/guestbook.jsp) displays the captcha image, and asks the user to type in the code.  [stage1/src/main/java/com/google/appengine/demos/guestbook/SignGuestbookServlet.java](stage1/src/main/java/com/google/appengine/demos/guestbook/SignGuestbookServlet.java) checks the submitted code against the value in the `Session`, and does not record the comment if the captcha code is incorrect.
 
 Notice that all the applications can now use the Servlet 3.1 APIs and annotations. There is an extra setting ("java_quickstart") you need to declare in [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml) for this:
 
@@ -159,7 +159,7 @@ First, set the project you're using with `gcloud`:
 
 	$ gcloud config set project <your-project>
 
-Make sure that you're using a Managed-VMs-enabled app, and have edited [statge1/src/main/webapp/WEB-INF/appengine-web.xml](statge1/src/main/webapp/WEB-INF/appengine-web.xml) to use that app id. (When you change the app id, remember to rebuild using `mvn package`).  Then do:
+Make sure that you're using a Managed-VMs-enabled app, and have edited [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml) to use that app id. (When you change the app id, remember to rebuild using `mvn package`).  Then do:
 
 	$ gcloud preview app deploy target/guestbook-1.0-SNAPSHOT
 
@@ -179,12 +179,12 @@ In Stage 2 of this app, we will to use the linux 'fortune' program to autofill i
 These changes involve a couple of new things.
 
 First, we need to install the 'fortune' program on our Managed VM instances, so that we can access it. We will do this by defining a `Dockerfile` for the app.
-Then, we will define a new class (called `FortuneInfo`), that will exec this program, save the results to a new file, then read the file and serve up the results.
+Then, we will define a new class (called [stage2/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java](stage2/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java)), that will exec this program, save the results to a new file, then read the file and serve up the results.
 Take a quick look at `FortuneInfo.java`.  Both the use of `ProcessBuilder`, and and the temp file writes to the local filesystem, would not work on 'regular' App Engine instances.
 
 <img src="http://storage.googleapis.com/amy-jo/articles/gb_captcha_local2.png" width="500" alt="Guestbook with Fortunes"/>
 
-Take a look at the [stage2/src/main/webapp/Dockefile](stage2/src/main/webapp/Dockefile) file:
+Take a look at the [stage2/src/main/webapp/Dockerfile](stage2/src/main/webapp/Dockerfile) file:
 It looks like this:
 
 	FROM google/appengine-java
