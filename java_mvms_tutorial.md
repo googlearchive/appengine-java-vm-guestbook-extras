@@ -20,15 +20,28 @@ The third stage shows how you can install Java 8 on your Managed VM instance via
 First, complete the following steps:
 
 - [Create your project](https://developers.google.com/appengine/docs/managed-vms/) and have it enabled for Managed VMs.
-- Install Docker in a local VM, as [described here](http://goo.gl/bpxIuj).
+- Install Docker/boot2docker. Full instructions are provided on the Docker site for installing Docker on different operating systems.
+  - Mac OS X: [http://docs.docker.io/installation/mac/](http://docs.docker.io/installation/mac/)
+  - Windows: [http://docs.docker.io/installation/windows/](http://docs.docker.io/installation/windows/)
+  - Other operating systems: [https://docs.docker.com/installation/](https://docs.docker.com/installation/)
+
   **Note: make sure your VirtualBox VM has 2Gb or RAM (or more). Otherwise, the Java runtime may have issues.**
-- Download and install [the Beta build of the Google Cloud SDK](https://console.developers.google.com/m/cloudstorage/b/managed-vm-sdk/o/managed-vm-sdk-latest.zip),  as [described here](http://goo.gl/bpxIuj).
+- Download and install [the Beta build of the Google Cloud SDK][https://developers.google.com/cloud/sdk/#Quick_Start](https://developers.google.com/cloud/sdk/#Quick_Start).
+- Install the Cloud SDK `app` component:
+
+	    $ gcloud components list
+        $ gcloud components update app
+        
+- You can also download the App Engine base Docker images that will be used (make sure boot2docker is installed first, configured and `up`):
+
+        $ gcloud preview app setup-managed-vms
+
 
 ### Gcloud Authentication ###
 
 Be sure to first authenticate with:
 
-	gcloud auth login
+	$ gcloud auth login
 
 ### Install Maven ###
 
@@ -41,7 +54,7 @@ This app uses as its starting point the (familiar to many) App Engine "guestbook
 
 The 3 stages shown in this tutorial are:
 
-| Stage  |Descripton           | 
+| Stage  |Description           | 
 | ------- |-------------| 
 | stage1 | Add a captcha library using AWT to the GuestBook application |
 | stage2 | Customize the Dockerfile to install a Linux native package and call it from Java, writing to the local file system |
@@ -169,7 +182,7 @@ This deployment is using the 'default'  `Dockerfile`, which you can see in the `
 	ADD . /app
 
 
-After deployment, go to your app: http://<your-app-id>.appspot.com.
+After deployment, go to your app: http://YOUR-APP-ID.appspot.com.
 The app should work the same as it did with the local development server. You'll see the captcha image— this code wouldn't have worked with 'regular' App Engine instances!
 
 ## Stage 2: Configure a Dockerfile for the app ##
@@ -240,7 +253,7 @@ The exact same Docker image that was used inside the development server has been
 
 As a final stage of this tutorial, we will show how you can run your app using Java 8 (not yet supported on 'regular' App Engine instances), by adding additional commands to the app's `Dockerfile`.  You can find the code for this version of the app in the `stage3` directory.
 
-First, edit your [stage3/src/main/webapp/Dockefile](stage3/src/main/webapp/Dockefile) file to look like the following.
+First, edit your [stage3/src/main/webapp/Dockerfile](stage3/src/main/webapp/Dockerfile) file to look like the following.
 
 	FROM google/appengine-java
 	RUN apt-get update && apt-get install -y fortunes
