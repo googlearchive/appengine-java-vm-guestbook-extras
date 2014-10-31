@@ -57,7 +57,7 @@ With Managed VMs, you can  run outside the traditional App Engine instance 'sand
 In this section of the tutorial, we're going to use the java.awt.*  package, which does not run on App Engine's sandboxed instances, to build 'captcha' support for the guestbook app.
 (In the next section, we'll write to the file system, which also is not supported by a sandboxed instance).
 
-Go to the `stage1` directory of the downloaded sample.  Take a look at `stage1/src/main/webapp/WEB-INF/appengine-web.xml`.  You'll see that it includes these settings:
+Go to the [stage1](stage1) directory of the downloaded sample.  Take a look at [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml).  You'll see that it includes these settings:
 
     <vm>true</vm>
     <beta-settings>
@@ -72,11 +72,11 @@ This indicates that this app module (the 'default' module, in this case) is a Ma
 
 While you're looking at `appengine-web.xml`,  go ahead and change the <application> id to your app id.  (This is not necessary for running locally using the development server, but is necessary for deployment).
 
-Before running the app, take a quick look at the  `stage1/src/main/java/com/google/appengine/demos/guestbook/CaptchaServlet.java` servlet, which is new.  It uses the java.awt.* package to generate and serve up a 'captcha' image, putting the corresponding 'captcha code' in the `Session`. This is also a Servlet 3.1 annotated servlet, so no need to define it in the web.xml file.
+Before running the app, take a quick look at the  [stage1/src/main/java/com/google/appengine/demos/guestbook/CaptchaServlet.java](stage1/src/main/java/com/google/appengine/demos/guestbook/CaptchaServlet.java) servlet, which is new.  It uses the java.awt.* package to generate and serve up a 'captcha' image, putting the corresponding 'captcha code' in the `Session`. This is also a Servlet 3.1 annotated servlet, so no need to define it in the web.xml file.
 
 `guestbook.jsp` displays the captcha image, and asks the user to type in the code.  `SignGuestbookServlet` checks the submitted code against the value in the `Session`, and does not record the comment if the captcha code is incorrect.
 
-Notice that all the applications can now use the Servlet 3.1 APIs and annotations. There is an extra setting ("java_quickstart") you need to declare in `stage1/src/main/webapp/WEB-INF/appengine-web.xml` for this:
+Notice that all the applications can now use the Servlet 3.1 APIs and annotations. There is an extra setting ("java_quickstart") you need to declare in [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml) for this:
 
     <beta-settings>
         <setting name="machine_type" value="n1-standard-1"/>
@@ -85,7 +85,7 @@ Notice that all the applications can now use the Servlet 3.1 APIs and annotation
     
 #### Maven Deploy on Save ####
 The Maven project is configured to enable the fast "Deploy on Save" feature that IDEs like NetBeans, Eclipse, Android Studio or Intellij support (For Intellij, you need to click the Build->Make project menu). The Deploy on Save feature will recompile the Java files in place or update the Web Content, and the Google Cloud SDK will detect the file change and trigger automatically a build of a new Docker container with the updated application, allowing very fast development cycles.
-The trick is in the `stage1/pom.xml` file:
+The trick is in the [stage1/pom.xml](stage1/pom.xml) file:
 
     <build>
       <!-- needed for enabling compile/reload on save in modern IDEs...-->
@@ -159,7 +159,7 @@ First, set the project you're using with `gcloud`:
 
 	$ gcloud config set project <your-project>
 
-Make sure that you're using a Managed-VMs-enabled app, and have edited `src/main/webapp/WEB-INF/appengine-web.xml` to use that app id. (When you change the app id, remember to rebuild using `mvn package`).  Then do:
+Make sure that you're using a Managed-VMs-enabled app, and have edited [statge1/src/main/webapp/WEB-INF/appengine-web.xml](statge1/src/main/webapp/WEB-INF/appengine-web.xml) to use that app id. (When you change the app id, remember to rebuild using `mvn package`).  Then do:
 
 	$ gcloud preview app deploy target/guestbook-1.0-SNAPSHOT
 
@@ -184,7 +184,7 @@ Take a quick look at `FortuneInfo.java`.  Both the use of `ProcessBuilder`, and 
 
 <img src="http://storage.googleapis.com/amy-jo/articles/gb_captcha_local2.png" width="500" alt="Guestbook with Fortunes"/>
 
-Take a look at the `stage2/src/main/webapp/Dockefile` file:
+Take a look at the [stage2/src/main/webapp/Dockefile](stage2/src/main/webapp/Dockefile) file:
 It looks like this:
 
 	FROM google/appengine-java
@@ -209,7 +209,7 @@ You should now see the guestbook entry field autofilled with a randomly-selected
 
 ### Enable a Java Debugger For Your App Locally ###
 
-The Java process running inside the Docker container can be configured to be debugged. See in the `stage2/src/main/webapp/WEB-INF/appengine-web.xml` file the environment variable settings DBG_ENABLE and DBG_PORT (default value is 5005):
+The Java process running inside the Docker container can be configured to be debugged. See in the [stage2/src/main/webapp/WEB-INF/appengine-web.xml](stage2/src/main/webapp/WEB-INF/appengine-web.xml) file the environment variable settings DBG_ENABLE and DBG_PORT (default value is 5005):
 
      <!-- for enabling Java debugging in the container: -->
      <env-variables>
@@ -240,7 +240,7 @@ The exact same Docker image that was used inside the development server has been
 
 As a final stage of this tutorial, we will show how you can run your app using Java 8 (not yet supported on 'regular' App Engine instances), by adding additional commands to the app's `Dockerfile`.  You can find the code for this version of the app in the `stage3` directory.
 
-First, edit your `stage3/src/main/webapp/Dockefile` file to look like the following.
+First, edit your [stage3/src/main/webapp/Dockefile](stage3/src/main/webapp/Dockefile) file to look like the following.
 
 	FROM google/appengine-java
 	RUN apt-get update && apt-get install -y fortunes
@@ -255,7 +255,7 @@ First, edit your `stage3/src/main/webapp/Dockefile` file to look like the follow
     ADD . /app
 
 
-Then, `stage3/src/main/webapp/guestbook.jsp` has been modified to grab the Java version from the system properties, and print it at the top of the page.
+Then, [stage3/src/main/webapp/guestbook.jsp](stage3/src/main/webapp/guestbook.jsp) has been modified to grab the Java version from the system properties, and print it at the top of the page.
 
 ### Local Testing and Deployment ###
 
