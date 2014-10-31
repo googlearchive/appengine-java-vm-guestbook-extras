@@ -8,4 +8,4 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 RUN apt-get update
 RUN apt-get install -y oracle-java8-installer
 
-ADD . /home/vmagent/appengine-java-vmruntime/webapps/root
+ADD . /app

@@ -6,16 +6,20 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import java.util.Random;
 import javax.imageio.ImageIO;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 // inspired by: http://zetcode.com/tutorials/jeetutorials/captcha/
 
+@WebServlet(name = "captcha", urlPatterns = {"/captcha/*"})
 public class CaptchaServlet extends HttpServlet {
 
 
@@ -81,12 +85,13 @@ public class CaptchaServlet extends HttpServlet {
     g2d.dispose();
 
     response.setContentType("image/png");
-    OutputStream os = response.getOutputStream();
-    ImageIO.write(bufferedImage, "png", os);
-    os.close();
+    try (OutputStream os = response.getOutputStream()) {
+      ImageIO.write(bufferedImage, "png", os);
+    }
   }
 
 
+  @Override
   protected void doGet(HttpServletRequest request,
                        HttpServletResponse response)
                            throws ServletException, IOException {

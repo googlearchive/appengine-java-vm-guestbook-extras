@@ -34,6 +34,7 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 %>
+<p>Using the native linux program inside the Docker container: /usr/games/fortune</p>
 <p>Hello, ${fn:escapeXml(user.nickname)}! (You can
 <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
 <%

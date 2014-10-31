@@ -30,6 +30,7 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 %>
+<p><a href="/SystemViewer">Click to see more information regarding the running Docker container...</a></p>
 <p>Hello, ${fn:escapeXml(user.nickname)}! (You can
 <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
 <%
