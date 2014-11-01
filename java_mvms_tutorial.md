@@ -26,7 +26,9 @@ First, complete the following steps:
   - Other operating systems: [https://docs.docker.com/installation/](https://docs.docker.com/installation/)
 
   **Note: make sure your VirtualBox VM has 2Gb or RAM (or more). Otherwise, the Java runtime may have issues.**
-- Download and install [the Beta build of the Google Cloud SDK][https://developers.google.com/cloud/sdk/#Quick_Start](https://developers.google.com/cloud/sdk/#Quick_Start).
+  
+  It is a good idea to become familar with the Docker environment as the Managed VMs development environment and deployment environment in the Cloud is based on it. You can learn more at [https://www.docker.com/](https://www.docker.com/).
+- Download and install [the Beta build of the Google Cloud SDK](https://developers.google.com/cloud/sdk/#Quick_Start).
 - Install the Cloud SDK `app` component:
 
 	    $ gcloud components list
@@ -34,6 +36,10 @@ First, complete the following steps:
         
 - You can also download the App Engine base Docker images that will be used (make sure boot2docker is installed first, configured and `up`):
 
+        # This assumes that boot2docker is correctly configured, and up
+        $ boot2docker up
+        $ docker ps
+        # If the docker ps command issues an error, you are not ready to use the gcloud commands for Managed VM, make sure the docker command is working. Then:
         $ gcloud preview app setup-managed-vms
 
 
@@ -43,13 +49,20 @@ Be sure to first authenticate with:
 
 	$ gcloud auth login
 
-### Install Maven ###
+### Install Maven and Git###
 
 This tutorial uses Maven 3.1 or above to build its Java projects, so [install Maven](http://maven.apache.org/download.cgi) as necessary.
+Be familiar with the Managed VMs Maven specific documentation located at [https://cloud.google.com/appengine/docs/java/managed-vms/maven](https://cloud.google.com/appengine/docs/java/managed-vms/maven)
+
+If you are new to git, please refer to the [git documentation](http://git-scm.com/docs).
 
 ### Grab the Sample Code  ###
 
 Then, grab the starter code that we'll use for this tutorial, from this repo: [https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras](https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras).
+
+    $ git clone https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras.git
+    $ cd stage1
+    
 This app uses as its starting point the (familiar to many) App Engine "guestbook" sample, but some extras are added that highlight the capabilities of Managed VMs.  Here, we'll assume familiarity with the basic Guestbook app and plunge into the new stuff.
 
 The 3 stages shown in this tutorial are:
@@ -115,6 +128,17 @@ The trick for Deploy on Save is in the [stage1/pom.xml](stage1/pom.xml) file, re
 First, run the appengine:gcloud_app_run Maven target that will compile your project and start locally the development server and create the correct Docker container to execute your application:
 
 	$ mvn appengine:gcloud_app_run
+
+If this does not work, it is possible that boot2docker is not up or not correctly configured, or you did not install the Cloud SDK or it is not installed in the default location (under you home directory and the google-cloud-sdk/ directory). You can tell Maven a different location by changing the pom.xml and using the gcloud_directory parameter:
+
+       <plugin>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>1.9.15</version>
+        <configuration>
+          <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
+          ...
+          
 
 After some initialization steps (validation, build of the Docker image and execution of a Docker container that contains your application)
 
