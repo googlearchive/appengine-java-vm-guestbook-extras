@@ -3,10 +3,10 @@ Copyright (C) 2014 Google Inc.
 
 # Java Managed VMs Tutorial #
 
-The [App Engine Managed VMs](https://developers.google.com/appengine/docs/managed-vms/) hosting environment lets you run App Engine applications on configurable Compute Engine Virtual Machines (VMs). This VM-based hosting environment offers more flexibility and provides more CPU and memory options. Applications that run on Managed VMs are not subject to Java and Python runtime restrictions, and they have access to all the Compute Engine machine types. You can also add third-party libraries and frameworks to your app.
+The [App Engine Managed VMs](https://developers.google.com/appengine/docs/managed-vms/) hosting environment lets you run App Engine applications on configurable Compute Engine Virtual Machines (VMs). This VM-based hosting environment offers more flexibility and provides more CPU and memory options. Applications that run on Managed VMs are not subject to Java and Python runtime restrictions, and they have access to all the Compute Engine machine types. You can also add third-party libraries and frameworks to your application.
 Managed VMs instances are [Docker](https://www.docker.com/)-container-based, and with the Beta gcloud SDK, it is now possible to edit the `Dockerfile` configuration used by a module's instances.
 
-This tutorial walks through use of Managed VMs and the new gcloud SDK for a Java app; shows how you can test Managed VMs locally as well as deploy using the new SDK; and shows how to use a non-default `Dockerfile`.
+This tutorial walks through the use of Managed VMs and the new gcloud SDK for a Java Web Application. It shows how you can test Managed VMs locally as well as deploy using the new SDK; and shows how to use a non-default `Dockerfile`.
 
 The code for this tutorial is here: [https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras](https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras).
 It includes several stages of a sample app.
@@ -83,6 +83,8 @@ Go to the [stage1](stage1) directory of the downloaded sample.  Take a look at [
 
 This indicates that this app module (the 'default' module, in this case) is a Managed VMs module, and indicates that one instance of this module version should be started.
 
+Notice the `java_quickstart` setting: it allows you to use some advanced Servlet 3.1 annotations processing developed for the Jetty Web Server. For more details about the `java_quickstart`feature, you can see this article: [https://webtide.com/jetty-9-quick-start/](https://webtide.com/jetty-9-quick-start/), or refer to this [JavaOne 2014 presentation](https://oracleus.activeevents.com/2014/connect/fileDownload/session/A53E3FEF3C8321FF7542202FA4B4D791/CON5100_Moussine-Pouchkine-Java%20in%20the%20Cloud-%20The%20Good%20Parts%20(JavaOne%202014\).pdf).
+
 While you're looking at `appengine-web.xml`,  go ahead and change the <application> id to your app id.  (This is not necessary for running locally using the development server, but is necessary for deployment).
 
 Before running the app, take a quick look at the  [stage1/src/main/java/com/google/appengine/demos/guestbook/CaptchaServlet.java](stage1/src/main/java/com/google/appengine/demos/guestbook/CaptchaServlet.java) servlet, which is new.  It uses the java.awt.* package to generate and serve up a 'captcha' image, putting the corresponding 'captcha code' in the `Session`. This is also a Servlet 3.1 annotated servlet, so no need to define it in the web.xml file.
@@ -97,8 +99,8 @@ Notice that all the applications can now use the Servlet 3.1 APIs and annotation
     </beta-settings>
     
 #### Maven Deploy on Save ####
-The Maven project is configured to enable the fast "Deploy on Save" feature that IDEs like NetBeans, Eclipse, Android Studio or Intellij support (For Intellij, you need to click the Build->Make project menu). The Deploy on Save feature will recompile the Java files in place or update the Web Content, and the Google Cloud SDK will detect the file change and trigger automatically a build of a new Docker container with the updated application, allowing very fast development cycles.
-The trick is in the [stage1/pom.xml](stage1/pom.xml) file:
+The Maven project is configured to enable the fast "Deploy on Save" feature that IDEs like NetBeans, Eclipse, Android Studio or Intellij support. The Deploy on Save feature will recompile the Java files in place or update the Web Content, and the Google Cloud SDK will detect the file change and trigger automatically a build of a new Docker container with the updated application, allowing very fast development cycles. This is the preferred way of working for productive developers. Some features will not be supported, like for example, when you change some appengine-web.xml or if you add or modify a Servlet 3.1 annotations, but for most changes, it is the fastest way to see them live immediately.
+The trick for Deploy on Save is in the [stage1/pom.xml](stage1/pom.xml) file, regarding the `outputDirectory` setup.
 
     <build>
       <!-- needed for enabling compile/reload on save in modern IDEs...-->
@@ -108,9 +110,9 @@ The trick is in the [stage1/pom.xml](stage1/pom.xml) file:
      ...
      
     
-### Run Your App Locally ###
+### Run Your Application Locally ###
 
-First, run the appengine:gcloud_app_run Maven target that will compile your project and start locally thw development server and create the correct Docker container to execute your application:
+First, run the appengine:gcloud_app_run Maven target that will compile your project and start locally the development server and create the correct Docker container to execute your application:
 
 	$ mvn appengine:gcloud_app_run
 
@@ -141,7 +143,8 @@ After some initialization steps (validation, build of the Docker image and execu
     INFO: To debug module default attach to 192.168.59.103:5005
     INFO: default: "GET /_ah/start HTTP/1.1" 404 287
     INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 200 2
- you can visit the URL that the development server is running on (likely: [http://localhost:8080](http://localhost:8080)). You should see a figure that looks like the following. The app is the (probably all-too-familiar) guestbook app, but with a 'captcha' image and field added.  You must type in the captcha word correctly for the entry to be posted.
+
+you can visit the URL that the development server is running on (likely: [http://localhost:8080](http://localhost:8080)). You should see a figure that looks like the following. The application is the (probably all-too-familiar) guestbook app, but with a 'captcha' image and field added.  You must type in the captcha word correctly for the entry to be posted.
 
 <img src="http://storage.googleapis.com/amy-jo/articles/gb_captcha_local.png" width="500" alt="Guestbook with Captcha"/>
 
@@ -163,10 +166,14 @@ If you want to see the Docker container running, you can use the docker ps comma
     $ ps -aef | grep cloud-sdk
     python -S /Users/ludo/google-cloud-sdk/lib/googlecloudsdk/gcloud/gcloud.py --project=your-app-id preview app run /Users/ludo/a/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT
      ...
+     # sometimes, the docker container is still running when you stop the development server from Intellij IDE. You can stop this docker container using its ID:
+     $ docker stop 83a5c9b111da
+     
+As you see, you need to become familiar with the Docker system in terms of running, stopping or accessing the log of a container.
 
-### Deploy Your App ###
+### Deploy Your Application ###
 
-Next, try deploying your app to production.
+Next, try deploying your application to production.
 
 First, set the project you're using with `gcloud`:
 
@@ -183,17 +190,17 @@ This deployment is using the 'default'  `Dockerfile`, which you can see in the `
 
 
 After deployment, go to your app: http://YOUR-APP-ID.appspot.com.
-The app should work the same as it did with the local development server. You'll see the captcha image— this code wouldn't have worked with 'regular' App Engine instances!
+The app should work the same as it did with the local development server, because it is the same Docker container that you ran locally in the development server that is deployed and executed in the Google App Engine Cloud. You'll see the captcha image. This code would not have worked with a 'regular' App Engine instance!
 
-## Stage 2: Configure a Dockerfile for the app ##
+## Stage 2: Configure a Dockerfile for the Application ##
 
-In Stage 2 of this app, we will to use the linux 'fortune' program to autofill in the guestbook entries with 'suggested text', in case a guest has a case of writer's block.  You'll find this version of the app in the `stage2` directory.
+In Stage 2 of this application, we will to use the linux 'fortune' program to autofill in the guestbook entries with 'suggested text', in case a guest has a case of writer's block.  You'll find this version of the application in the `stage2` directory.
 
 These changes involve a couple of new things.
 
 First, we need to install the 'fortune' program on our Managed VM instances, so that we can access it. We will do this by defining a `Dockerfile` for the app.
-Then, we will define a new class (called [stage2/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java](stage2/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java)), that will exec this program, save the results to a new file, then read the file and serve up the results.
-Take a quick look at `FortuneInfo.java`.  Both the use of `ProcessBuilder`, and and the temp file writes to the local filesystem, would not work on 'regular' App Engine instances.
+Then, we will define a new class (called [stage2/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java](stage2/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java)), that will execute this program, save the results to a new file, then read the file and serve up the results.
+Take a quick look at `FortuneInfo.java`.  Both the use of `ProcessBuilder`, and the capability of writing temporary files to the local filesystem, would not work on 'regular' App Engine instances.
 
 <img src="http://storage.googleapis.com/amy-jo/articles/gb_captcha_local2.png" width="500" alt="Guestbook with Fortunes"/>
 
@@ -208,7 +215,7 @@ The file indicates to: start with the default java runtime docker image, and add
 
 Build your app, via `mvn package`.
 
-### Run Your App Locally ###
+### Run Your Application Locally ###
 
 As described above for Stage 1, build your app and run it locally:
 
@@ -218,9 +225,15 @@ As described above for Stage 1, build your app and run it locally:
 	# Or via the gcloud Cloud SDK command line tool:
 	$ gcloud  preview app run target/guestbook-1.0-SNAPSHOT
 
-You should now see the guestbook entry field autofilled with a randomly-selected 'fortune'.
+This run is compiling the Maven project, processing the Servlet 3.1 annotations, then starts the development server that is building a Docker image and running it in the context of the boot2docker installation you have on you local machine. You should now see the guestbook entry field autofilled with a randomly-selected 'fortune'.
 
-### Enable a Java Debugger For Your App Locally ###
+Remember you can see the log of the Docker container or see the container status using the Docker commands: 
+    
+    $ docker ps
+    # or 
+    $ docker logs <container ID>
+
+### Enable a Java Debugger For Your Application Locally ###
 
 The Java process running inside the Docker container can be configured to be debugged. See in the [stage2/src/main/webapp/WEB-INF/appengine-web.xml](stage2/src/main/webapp/WEB-INF/appengine-web.xml) file the environment variable settings DBG_ENABLE and DBG_PORT (default value is 5005):
 
