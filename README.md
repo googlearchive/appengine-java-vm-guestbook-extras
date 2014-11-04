@@ -251,6 +251,14 @@ As described above for Stage 1, build your app and run it locally:
 
 This run is compiling the Maven project, processing the Servlet 3.1 annotations, then starts the development server that is building a Docker image and running it in the context of the boot2docker installation you have on you local machine. You should now see the guestbook entry field autofilled with a randomly-selected 'fortune'.
 
+Note: **the first time** you do a run, the Cloud SDK is building (and caching) the Docker image. This can take a *long time*, and the Beta SDK does not emit good notification yet. You'll see many lines like (sometimes for minutes or 10s of minutes if you Docker customization is accessing slow sites):
+
+    INFO: Starting admin server at: http://localhost:8000
+    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 503 
+    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 503 
+    
+Be very **patient**. You can see the Docker build process and the necessary apt-get commands using the docker ps command. Subsequent builds and run are much faster as Docker caches the Docker image, and only the `ADD . /app` Dockerfile line is executed which is very fast.
+
 Remember you can see the log of the Docker container or see the container status using the Docker commands: 
     
     $ docker ps
