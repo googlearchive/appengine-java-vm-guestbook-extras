@@ -195,6 +195,12 @@ If you want to see the Docker container running, you can use the docker ps comma
      
 As you see, you need to become familiar with the Docker system in terms of running, stopping or accessing the log of a container.
 
+**Note for IDE users**: If you are using NetBeans or Eclipse, you can stop the Cloud SDK run session with a click on the little RED icon that stop a process in the IDE terminal view. There is also a RED icon button in Android Studio and Intellij, but this one will not stop correctly the Cloud SDK: The docker containers will not be stopped and you need to stop them from the command line. You can instead execute the Maven command from CLI or the IDES to safely stop the running processes:
+
+    $ mvn appengine:gcloud_app_run_stop
+    
+
+
 ### Deploy Your Application ###
 
 Next, try deploying your application to production.
