@@ -11,12 +11,14 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import java.io.IOException;
 import java.util.Date;
+import javax.servlet.annotation.WebServlet;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+@WebServlet(name = "sign", urlPatterns = {"/sign"})
 public class SignGuestbookServlet extends HttpServlet {
 
     @Override

@@ -39,7 +39,7 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 %>
-<p>Java Version: ${fn:escapeXml(javaversion)}.</p>
+<p><a href="/SystemViewer">Java Version (Click to see more information regarding the running Docker container...):</a> ${fn:escapeXml(javaversion)}.</p>
 <p>Hello, ${fn:escapeXml(user.nickname)}! (You can
 <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
 <%

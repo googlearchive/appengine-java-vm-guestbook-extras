@@ -1,16 +1,10 @@
 package com.google.appengine.demos.guestbook;
 
-import com.google.appengine.api.utils.SystemProperty;
-import com.google.apphosting.api.ApiProxy;
-import com.google.apphosting.api.ApiProxy.Environment;
 
-import java.lang.InterruptedException;
 import java.io.IOException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.List;
 import java.util.logging.Logger;
 
 
