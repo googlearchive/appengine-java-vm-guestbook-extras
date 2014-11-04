@@ -317,7 +317,11 @@ Then, [stage3/src/main/webapp/guestbook.jsp](stage3/src/main/webapp/guestbook.js
 
 ### Local Testing and Deployment ###
 
-The local testing and deployment process is the same as above.
+The local testing and deployment process is the same as above, except that you need to make sure you have installed a local JDK 8 on your development machine, so that the Maven build can invoke the Java 8 compiler needed to compile your application code before it is added to the Docker image. Maven will look for the JAVA_HOME environment variable so make sure it points to the correct JDK, for example, on a Mac:
+
+     $ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home
+
+
 This time, when you visit your app, you should see at the top of the page an indication of the java version you're running.  It should look something like the figure below.
 
 <img src="http://storage.googleapis.com/amy-jo/articles/java8_mvms.png" width="500" alt="Guestbook on Java 8"/>
