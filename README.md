@@ -211,7 +211,7 @@ First, set the project you're using with `gcloud`:
 
 Make sure that you're using a Managed-VMs-enabled app, and have edited [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml) to use that app id. (When you change the app id, remember to rebuild using `mvn package`).  Then do:
 
-	$ gcloud preview app deploy target/guestbook-1.0-SNAPSHOT
+	$ gcloud preview app deploy target/guestbook-stage1-1.0-SNAPSHOT
 
 This deployment is using the 'default'  `Dockerfile`, which you can see in the `<preview_google-cloud-sdk>/docker/dockerfiles` directory.  It contains just:
 
