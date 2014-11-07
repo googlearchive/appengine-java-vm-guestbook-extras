@@ -253,7 +253,7 @@ As described above for Stage 1, build your app and run it locally:
 	$ mvn appengine:gcloud_app_run
 	
 	# Or via the gcloud Cloud SDK command line tool:
-	$ gcloud  preview app run target/guestbook-1.0-SNAPSHOT
+	$ gcloud  preview app run target/guestbook-stage2-1.0-SNAPSHOT
 
 This run is compiling the Maven project, processing the Servlet 3.1 annotations, then starts the development server that is building a Docker image and running it in the context of the boot2docker installation you have on you local machine. You should now see the guestbook entry field autofilled with a randomly-selected 'fortune'.
 
@@ -296,7 +296,7 @@ Deploy your application using the same instructions as above for the Stage 1 ver
 	$ mvn appengine:gcloud_app_deploy
 	
 	# Or via the gcloud Cloud SDK command line tool:
-    $ gcloud preview app deploy target/guestbook-1.0-SNAPSHOT --set-default
+    $ gcloud preview app deploy target/guestbook-stage2-1.0-SNAPSHOT --set-default
 	
 The exact same Docker image that was used inside the development server has been pushed to the Google Cloud and is used in production.
 
