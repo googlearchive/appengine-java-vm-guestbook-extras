@@ -6,6 +6,7 @@ Copyright (C) 2014 Google Inc.
 The [App Engine Managed VMs](https://developers.google.com/appengine/docs/managed-vms/) hosting environment lets you run App Engine applications on configurable Compute Engine Virtual Machines (VMs). This VM-based hosting environment offers more flexibility and provides more CPU and memory options. Applications that run on Managed VMs are not subject to Java and Python runtime restrictions, and they have access to all the Compute Engine machine types. You can also add third-party libraries and frameworks to your application.
 Managed VMs instances are [Docker](https://www.docker.com/)-container-based, and with the Beta gcloud SDK, it is now possible to edit the `Dockerfile` configuration used by a module's instances.
 
+
 This tutorial walks through the use of Managed VMs and the new gcloud SDK for a Java Web Application. It shows how you can test Managed VMs locally as well as deploy using the new SDK; and shows how to use a non-default `Dockerfile`.
 
 The code for this tutorial is here: [https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras](https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras).
