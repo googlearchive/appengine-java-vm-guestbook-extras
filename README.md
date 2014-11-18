@@ -6,7 +6,6 @@ Copyright (C) 2014 Google Inc.
 The [App Engine Managed VMs](https://developers.google.com/appengine/docs/managed-vms/) hosting environment lets you run App Engine applications on configurable Compute Engine Virtual Machines (VMs). This VM-based hosting environment offers more flexibility and provides more CPU and memory options. Applications that run on Managed VMs are not subject to Java and Python runtime restrictions, and they have access to all the Compute Engine machine types. You can also add third-party libraries and frameworks to your application.
 Managed VMs instances are [Docker](https://www.docker.com/)-container-based, and with the Beta gcloud SDK, it is now possible to edit the `Dockerfile` configuration used by a module's instances.
 
-
 This tutorial walks through the use of Managed VMs and the new gcloud SDK for a Java Web Application. It shows how you can test Managed VMs locally as well as deploy using the new SDK; and shows how to use a non-default `Dockerfile`.
 
 The code for this tutorial is here: [https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras](https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras).
@@ -88,7 +87,6 @@ Go to the [stage1](stage1) directory of the downloaded sample.  Take a look at [
 
     <vm>true</vm>
     <beta-settings>
-        <setting name="machine_type" value="n1-standard-1"/>
         <setting name="java_quickstart" value="true"/>
     </beta-settings>
     <manual-scaling>
@@ -108,7 +106,6 @@ Before running the app, take a quick look at the  [stage1/src/main/java/com/goog
 Notice that all the applications can now use the Servlet 3.1 APIs and annotations. There is an extra setting ("java_quickstart") you need to declare in [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml) for this:
 
     <beta-settings>
-        <setting name="machine_type" value="n1-standard-1"/>
         <setting name="java_quickstart" value="true"/>
     </beta-settings>
     
@@ -126,16 +123,16 @@ The trick for Deploy on Save is in the [stage1/pom.xml](stage1/pom.xml) file, re
     
 ### Run Your Application Locally ###
 
-First, run the appengine:gcloud_app_run Maven target that will compile your project and start locally the development server and create the correct Docker container to execute your application:
+First, run the gcloud:run Maven target that will compile your project and start locally the development server and create the correct Docker container to execute your application:
 
-	$ mvn appengine:gcloud_app_run
+	$ mvn gcloud:run
 
 If this does not work, it is possible that boot2docker is not up or not correctly configured, or you did not install the Cloud SDK or it is not installed in the default location (under you home directory and the google-cloud-sdk/ directory). You can tell Maven a different location by changing the pom.xml and using the gcloud_directory parameter:
 
        <plugin>
         <groupId>com.google.appengine</groupId>
-        <artifactId>appengine-maven-plugin</artifactId>
-        <version>1.9.15</version>
+        <artifactId>gcloud-maven-plugin</artifactId>
+        <version>1.9.17</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
@@ -198,7 +195,7 @@ As you see, you need to become familiar with the Docker system in terms of runni
 
 **Note for IDE users**: If you are using NetBeans or Eclipse, you can stop the Cloud SDK run session with a click on the little RED icon that stop a process in the IDE terminal view. There is also a RED icon button in Android Studio and Intellij, but this one will not stop correctly the Cloud SDK: The docker containers will not be stopped and you need to stop them from the command line. You can instead execute the Maven command from CLI or the IDES to safely stop the running processes:
 
-    $ mvn appengine:gcloud_app_run_stop
+    $ mvn gcloud:run_stop
     
 
 
@@ -251,7 +248,7 @@ Build your app, via `mvn package`.
 As described above for Stage 1, build your app and run it locally:
 
 	# Via Maven:
-	$ mvn appengine:gcloud_app_run
+	$ mvn gcloud:run
 	
 	# Or via the gcloud Cloud SDK command line tool:
 	$ gcloud  preview app run target/guestbook-1.0-SNAPSHOT
@@ -294,7 +291,7 @@ The Cloud SDK will emit a message telling you to attach a JPDA dt_socket Java De
 Deploy your application using the same instructions as above for the Stage 1 version of the app:
 
 	# Via Maven:
-	$ mvn appengine:gcloud_app_deploy
+	$ mvn gcloud:deploy
 	
 	# Or via the gcloud Cloud SDK command line tool:
     $ gcloud preview app deploy target/guestbook-1.0-SNAPSHOT --set-default
