@@ -3,7 +3,7 @@ Copyright (C) 2014 Google Inc.
 
 # Java Managed VMs Tutorial #
 
-The [App Engine Managed VMs](https://developers.google.com/appengine/docs/managed-vms/) hosting environment lets you run App Engine applications on configurable Compute Engine Virtual Machines (VMs). This VM-based hosting environment offers more flexibility and provides more CPU and memory options. Applications that run on Managed VMs are not subject to Java and Python runtime restrictions, and they have access to all the Compute Engine machine types. You can also add third-party libraries and frameworks to your application.
+The [App Engine Managed VMs](https://cloud.google.com/appengine/docs/managed-vms/) hosting environment lets you run [App Engine applications](https://cloud.google.com/appengine/) on configurable [Compute Engine Virtual Machines](https://cloud.google.com/compute/) (VMs). This VM-based hosting environment offers more flexibility and provides more CPU and memory options. Applications that run on Managed VMs are not subject to Java and Python runtime restrictions, and they have access to all the Compute Engine machine types. You can also add third-party libraries and frameworks to your application.
 Managed VMs instances are [Docker](https://www.docker.com/)-container-based, and with the Beta gcloud SDK, it is now possible to edit the `Dockerfile` configuration used by a module's instances.
 
 This tutorial walks through the use of Managed VMs and the new gcloud SDK for a Java Web Application. It shows how you can test Managed VMs locally as well as deploy using the new SDK; and shows how to use a non-default `Dockerfile`.
@@ -19,7 +19,7 @@ The third stage shows how you can install Java 8 on your Managed VM instance via
 
 First, complete the following steps:
 
-- [Create your project](https://developers.google.com/appengine/docs/managed-vms/) and have it enabled for Managed VMs.
+- [Create your project](https://cloud.google.com/appengine/docs/managed-vms/) and have it enabled for Managed VMs.
 - Install Docker/boot2docker. Full instructions are provided on the Docker site for installing Docker on different operating systems.
   - Mac OS X: [http://docs.docker.io/installation/mac/](http://docs.docker.io/installation/mac/)
   - Windows: [http://docs.docker.io/installation/windows/](http://docs.docker.io/installation/windows/)
@@ -28,8 +28,8 @@ First, complete the following steps:
   **Note: make sure your VirtualBox VM has 2Gb or RAM (or more). Otherwise, the Java runtime may have issues.**
   
   It is a good idea to become familar with the Docker environment as the Managed VMs development environment and deployment environment in the Cloud is based on it. You can learn more at [https://www.docker.com/](https://www.docker.com/).
-- Download and install [the Beta build of the Google Cloud SDK](https://developers.google.com/cloud/sdk/#Quick_Start).
-- Install the Cloud SDK `app` component:
+- Download and install [the Beta build of the Google Cloud SDK](https://cloud.google.com/sdk/#Quick_Start).
+- [Install the Cloud SDK](https://cloud.google.com/sdk/) `app` component:
 
 	    $ gcloud components list
         $ gcloud components update app
@@ -52,7 +52,7 @@ Be sure to first authenticate with:
 ### Install Maven and Git###
 
 This tutorial uses Maven 3.1 or above to build its Java projects, so [install Maven](http://maven.apache.org/download.cgi) as necessary.
-Be familiar with the Managed VMs Maven specific documentation located at [https://cloud.google.com/appengine/docs/java/managed-vms/maven](https://cloud.google.com/appengine/docs/java/managed-vms/maven)
+Be familiar with the [Managed VMs Maven specific documentation](https://cloud.google.com/appengine/docs/java/managed-vms/maven)
 
 If you are new to git, please refer to the [git documentation](http://git-scm.com/docs).
 
