@@ -27,7 +27,7 @@
   <artifactId>guestbook-stage2</artifactId>
 
   <properties>
-    <appengine.target.version>1.9.17a</appengine.target.version>
+    <appengine.target.version>1.9.19</appengine.target.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -74,7 +74,7 @@
       <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>${appengine.target.version}</version>
+        <version>0.9.56.v20150417</version>
         <configuration>
 
         </configuration>
