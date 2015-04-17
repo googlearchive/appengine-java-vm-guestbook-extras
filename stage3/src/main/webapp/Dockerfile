@@ -1,4 +1,4 @@
-FROM google/appengine-java
+FROM gcr.io/google_appengine/java-compat
 RUN apt-get update && apt-get install -y fortunes
 # Install java8
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
