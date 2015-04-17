@@ -132,7 +132,7 @@ If this does not work, it is possible that boot2docker is not up or not correctl
        <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>1.9.17a</version>
+        <version>0.9.56.v20150417</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
