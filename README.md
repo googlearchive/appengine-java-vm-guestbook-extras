@@ -213,7 +213,7 @@ Make sure that you're using a Managed-VMs-enabled app, and have edited [stage1/s
 
 This deployment is using the 'default'  `Dockerfile`, which you can see in the `<preview_google-cloud-sdk>/docker/dockerfiles` directory.  It contains just:
 
-	FROM google/appengine-java
+	FROM gcr.io/google_appengine/java-compat
 	ADD . /app
 
 
@@ -235,7 +235,7 @@ Take a quick look at `FortuneInfo.java`.  Both the use of `ProcessBuilder`, and 
 Take a look at the [stage2/src/main/webapp/Dockerfile](stage2/src/main/webapp/Dockerfile) file:
 It looks like this:
 
-	FROM google/appengine-java
+	FROM gcr.io/google_appengine/java-compat
     RUN apt-get update && apt-get install -y fortunes
 	ADD . /app
 
@@ -304,7 +304,7 @@ As a final stage of this tutorial, we will show how you can run your app using J
 
 First, edit your [stage3/src/main/webapp/Dockerfile](stage3/src/main/webapp/Dockerfile) file to look like the following.
 
-	FROM google/appengine-java
+	FROM gcr.io/google_appengine/java-compat
 	RUN apt-get update && apt-get install -y fortunes
 	# Install java8
 	RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
