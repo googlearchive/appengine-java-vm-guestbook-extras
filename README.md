@@ -132,7 +132,7 @@ If this does not work, it is possible that boot2docker is not up or not correctl
        <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>0.9.56.v20150417</version>
+        <version>0.9.57.v20150423</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
@@ -182,7 +182,7 @@ If you want to see the Docker container running, you can use the docker ps comma
     Running locally and DBG_ENABLE is set, enabling standard Java debugger agent
     Listening for transport dt_socket at address: 5005
     2014-07-14 18:26:32.293:INFO::main: Logging initialized @403ms
-    2014-07-14 18:26:32.431:INFO::main: Redirecting stderr/stdout to /var/log/app_engine/STDERR.2014_07_14.log//var/log/app_engine/STDOUT.2014_10_30.log
+    2014-07-14 18:26:32.431:INFO::main: Redirecting stderr/stdout to /var/log/app_engine/STDERR.2014_07_14.log//var/log/app_engine/STDOUT.2014_07_14.log
     
     # See the running local Dev Application Server:
     $ ps -aef | grep cloud-sdk
