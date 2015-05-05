@@ -75,9 +75,6 @@
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
         <version>0.9.58.v20150505</version>
-        <configuration>
-          <gcloud_project>vmruntime-demo</gcloud_project>
-        </configuration>
       </plugin>
     </plugins>
   </build>
