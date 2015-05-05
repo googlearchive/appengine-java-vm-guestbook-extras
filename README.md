@@ -40,7 +40,6 @@ First, complete the following steps:
         $ docker ps
         # If the docker ps command issues an error, you are not ready to use the gcloud commands for Managed VM.
 
-
 ### Gcloud Authentication ###
 
 Be sure to first authenticate with:
