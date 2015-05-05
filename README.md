@@ -31,16 +31,14 @@ First, complete the following steps:
 - Download and install [the Beta build of the Google Cloud SDK](https://developers.google.com/cloud/sdk/#Quick_Start).
 - Install the Cloud SDK `app` component:
 
-	    $ gcloud components list
-        $ gcloud components update app
-        
-- You can also download the App Engine base Docker images that will be used (make sure boot2docker is installed first, configured and `up`):
-
+	$ gcloud components list
+        $ gcloud components update app gae-python
+        # Set the correct Cloud project
+        $ gcloud config set project YOUR_PROJECT
         # This assumes that boot2docker is correctly configured, and up
         $ boot2docker up
         $ docker ps
-        # If the docker ps command issues an error, you are not ready to use the gcloud commands for Managed VM, make sure the docker command is working. Then:
-        $ gcloud preview app setup-managed-vms
+        # If the docker ps command issues an error, you are not ready to use the gcloud commands for Managed VM.
 
 
 ### Gcloud Authentication ###
