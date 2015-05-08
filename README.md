@@ -92,7 +92,7 @@ Go to the [stage1](stage1) directory of the downloaded sample.  Take a look at [
 
 This indicates that this app module (the 'default' module, in this case) is a Managed VMs module, and indicates that one instance of this module version should be started.
 
-Notice the `java_quickstart` setting: it allows you to use some advanced Servlet 3.1 annotations processing developed for the Jetty Web Server. For more details about the `java_quickstart`feature, you can see this article: [https://webtide.com/jetty-9-quick-start/](https://webtide.com/jetty-9-quick-start/), or refer to this [JavaOne 2014 presentation](https://oracleus.activeevents.com/2014/connect/fileDownload/session/A53E3FEF3C8321FF7542202FA4B4D791/CON5100_Moussine-Pouchkine-Java%20in%20the%20Cloud-%20The%20Good%20Parts%20\(JavaOne%202014\\).pdf).
+Notice the `java_quickstart` setting: it allows you to use some advanced Servlet 3.1 annotations processing developed for the Jetty Web Server. For more details about the `java_quickstart`feature, you can see this article: [https://webtide.com/jetty-9-quick-start/](https://webtide.com/jetty-9-quick-start/), or refer to this [JavaOne 2014 presentation](https://oracleus.activeevents.com/2014/connect/fileDownload/session/A53E3FEF3C8321FF7542202FA4B4D791/CON5100_Moussine-Pouchkine-Java%20in%20the%20Cloud-%20The%20Good%20Parts%20\(JavaOne%202014\).pdf).
 
 While you're looking at `appengine-web.xml`,  go ahead and change the <application> id to your app id.  (This is not necessary for running locally using the development server, but is necessary for deployment).
 
