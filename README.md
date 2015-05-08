@@ -74,6 +74,9 @@ All stages use Maven and Servlet 3.1 features, with Debug enabled, and are execu
 
 **Make sure that boot2docker is running** before starting the next steps.
 
+    $ boot2docker up
+
+
 ## Stage 1 of the Sample App: Escape the Sandbox ##
 
 With Managed VMs, you can  run outside the traditional App Engine instance 'sandbox'.
