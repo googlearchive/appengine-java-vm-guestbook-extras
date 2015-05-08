@@ -204,9 +204,9 @@ First, set the project you're using with `gcloud`:
 
 	$ gcloud config set project <your-project>
 
-Make sure that you're using a Managed-VMs-enabled app, and have edited [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml) to use that app id. (When you change the app id, remember to rebuild using `mvn package`).  Then do:
+Make sure that you're using a Managed-VMs-enabled app, ins [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml).  Then do:
 
-	$ gcloud preview app deploy target/guestbook-stage1-1.0-SNAPSHOT
+	$ mvn gcloud:deploy
 
 This deployment is using the 'default'  `Dockerfile`, which you can see in the `<preview_google-cloud-sdk>/docker/dockerfiles` directory.  It contains just:
 
@@ -247,8 +247,6 @@ As described above for Stage 1, build your app and run it locally:
 	# Via Maven:
 	$ mvn gcloud:run
 	
-	# Or via the gcloud Cloud SDK command line tool:
-	$ gcloud  preview app run target/guestbook-stage2-1.0-SNAPSHOT
 
 This run is compiling the Maven project, processing the Servlet 3.1 annotations, then starts the development server that is building a Docker image and running it in the context of the boot2docker installation you have on you local machine. You should now see the guestbook entry field autofilled with a randomly-selected 'fortune'.
 
@@ -290,8 +288,6 @@ Deploy your application using the same instructions as above for the Stage 1 ver
 	# Via Maven:
 	$ mvn gcloud:deploy
 	
-	# Or via the gcloud Cloud SDK command line tool:
-    $ gcloud preview app deploy target/guestbook-stage2-1.0-SNAPSHOT --set-default
 	
 The exact same Docker image that was used inside the development server has been pushed to the Google Cloud and is used in production.
 
