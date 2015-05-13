@@ -103,11 +103,6 @@ Before running the app, take a quick look at the  [stage1/src/main/java/com/goog
 
 [stage1/src/main/webapp/guestbook.jsp](stage1/src/main/webapp/guestbook.jsp) displays the captcha image, and asks the user to type in the code.  [stage1/src/main/java/com/google/appengine/demos/guestbook/SignGuestbookServlet.java](stage1/src/main/java/com/google/appengine/demos/guestbook/SignGuestbookServlet.java) checks the submitted code against the value in the `Session`, and does not record the comment if the captcha code is incorrect.
 
-Notice that all the applications can now use the Servlet 3.1 APIs and annotations. There is an extra setting ("java_quickstart") you need to declare in [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml) for this:
-
-    <beta-settings>
-        <setting name="java_quickstart" value="true"/>
-    </beta-settings>
     
 #### Maven Deploy on Save ####
 The Maven project is configured to enable the fast "Deploy on Save" feature that IDEs like NetBeans, Eclipse, Android Studio or Intellij support. The Deploy on Save feature will recompile the Java files in place or update the Web Content, and the Google Cloud SDK will detect the file change and trigger automatically a build of a new Docker container with the updated application, allowing very fast development cycles. This is the preferred way of working for productive developers. Some features will not be supported, like for example, when you change some appengine-web.xml or if you add or modify a Servlet 3.1 annotations, but for most changes, it is the fastest way to see them live immediately.
