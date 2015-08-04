@@ -18,7 +18,12 @@ public class FortuneInfo {
   public static String getInfo() throws IOException {
 
     LOG.warning("in FortuneInfo.getInfo()");
-    ProcessBuilder pb = new ProcessBuilder("/usr/games/fortune");
+    File fort = new File("/usr/games/fortune");
+    if (!fort.exists()) {
+      return "It seems that the /usr/games/fortune application is not installed on your system. " + 
+              "(Maybe you are not running in a Docker container).";
+    }
+    ProcessBuilder pb = new ProcessBuilder(fort.getAbsolutePath());
     File f = File.createTempFile("fort", null);
     pb.redirectOutput(f);
     Process process = pb.start();

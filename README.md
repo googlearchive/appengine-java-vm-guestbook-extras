@@ -127,7 +127,7 @@ If this does not work, it is possible that boot2docker is not up or not correctl
        <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>0.9.68.v20150707</version>
+        <version>2.0.9.72.v20150804</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
@@ -321,7 +321,21 @@ This time, when you visit your app, you should see at the top of the page an ind
 
 <img src="http://storage.googleapis.com/amy-jo/articles/java8_mvms.png" width="500" alt="Guestbook on Java 8"/>
 
+### Locally running without Docker 
 
+It is now possible with the Cloud SDK to do a local execution of your application which is not using the Docker system. Instead of build your container and running it locally, the Cloud SDK will ignore the Dockerfile and execute a local Jetty 9 process. You can control this behaviour using the Maven configuration `non_docker_mode` and setting it to `true`:
+
+       <plugin>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>gcloud-maven-plugin</artifactId>
+        <version>....</version>
+        <configuration>
+          <non_docker_mode>true</non_docker_mode>
+        <configuration>
+       </plugin>
+       
+The debug section of this document will not work.
+       
 ## Summary ##
 
 This tutorial walked through use of Managed VMs and the new gcloud SDK for a Java app, based on an extended version of the "guestbook" app. It showed how you can test Managed VMs locally, as well as deploy using the new SDK; and showed how to "escape the sandbox" and use a non-default `Dockerfile`.
