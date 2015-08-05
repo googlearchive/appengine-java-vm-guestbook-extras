@@ -29,10 +29,10 @@ First, complete the following steps:
   
   It is a good idea to become familar with the Docker environment as the Managed VMs development environment and deployment environment in the Cloud is based on it. You can learn more at [https://www.docker.com/](https://www.docker.com/).
 - Download and install [the Beta build of the Google Cloud SDK](https://developers.google.com/cloud/sdk/#Quick_Start).
-- Install the Cloud SDK `app` component:
+- Install the Cloud SDK `app-engine-java` component:
 
 	    $ gcloud components list
-            $ gcloud components update app gae-python
+            $ gcloud components update app-engine-java
             # Set the correct Cloud project
             $ gcloud config set project YOUR_PROJECT
             # This assumes that boot2docker is correctly configured, and up
