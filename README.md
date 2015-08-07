@@ -1,7 +1,5 @@
+# Java Managed VMs Tutorial
 
-Copyright (C) 2014-2015 Google Inc.
-
-# Java Managed VMs Tutorial #
 
 The [App Engine Managed VMs](https://developers.google.com/appengine/docs/managed-vms/) hosting environment lets you run App Engine applications on configurable Compute Engine Virtual Machines (VMs). This VM-based hosting environment offers more flexibility and provides more CPU and memory options. Applications that run on Managed VMs are not subject to Java and Python runtime restrictions, and they have access to all the Compute Engine machine types. You can also add third-party libraries and frameworks to your application.
 Managed VMs instances are [Docker](https://www.docker.com/)-container-based, and with the Beta gcloud SDK, it is now possible to edit the `Dockerfile` configuration used by a module's instances.
@@ -14,6 +12,28 @@ It includes several stages of a sample app.
 The first stage of the example shows how you can 'escape the App Engine sandbox' by using some Java libraries that don't run on App Engine.
 The second stage shows how you can edit a Managed VM module's `Dockerfile` to further configure its instances.  In this case, we'll install a linux utility, and also write to the instances' local filesystem.
 The third stage shows how you can install Java 8 on your Managed VM instance via `Dockerfile` config.
+
+## Table of Contents
+* [Initial Setup](#Initial-Setup)
+  * [Gcloud Authentication](#Gcloud-Authentication)
+  * [Install Maven and Git](#Install-Maven-and-Git)
+  * [Grab the Sample Code](#Grab-the-Sample-Code)
+* [Stage 1-Escape the Sandbox](#Stage-1-Escape-the-Sandbox)
+  * [Maven Deploy on Save](#Maven-Deploy-on-Save)
+  * [Run Your Application Locally](#Run-Your-Application-Locally)
+  * [Deploy Your Application](#Deploy-Your-Application)
+* [Stage 2-Configure a Dockerfile for the Application](#Stage-2-Configure-a-Dockerfil-for-the-Application)
+  * [Run Your Application Locally](#Run-Your-Application-Locally)
+  * [Enable a Java Debugger For Your Application Locally](#Enable-a-Java-Debugger-For-Your-Application-Locally)
+  * [Deploy Your App](#Deploy-Your-App)
+* [Stage 3-Install Java 8 on Your Managed VM Instances](#Stage-3-Install-Java-8-on-Your-Managed-VM-Instances)
+  * [Local Testing and Deployment](#Local-Testing-and-Deployment)
+  * [Locally running without Docker](#Locally-running-without-Docker)
+* [Summary](#Summary)
+* [Contributing changes](#Contributing-changes)
+* [Licensing](#Licensing)
+
+
 
 ## Initial Setup ##
 
@@ -77,7 +97,7 @@ All stages use Maven and Servlet 3.1 features, with Debug enabled, and are execu
     $ boot2docker up
 
 
-## Stage 1 of the Sample App: Escape the Sandbox ##
+## Stage 1-Escape the Sandbox ##
 
 With Managed VMs, you can  run outside the traditional App Engine instance 'sandbox'.
 In this section of the tutorial, we're going to use the java.awt.*  package, which does not run on App Engine's sandboxed instances, to build 'captcha' support for the guestbook app.
@@ -193,7 +213,6 @@ As you see, you need to become familiar with the Docker system in terms of runni
     $ mvn gcloud:run_stop
     
 
-
 ### Deploy Your Application ###
 
 Next, try deploying your application to production.
@@ -215,7 +234,7 @@ This deployment is using the 'default'  `Dockerfile`, which you can see in the `
 After deployment, go to your app: http://YOUR-APP-ID.appspot.com.
 The app should work the same as it did with the local development server, because it is the same Docker container that you ran locally in the development server that is deployed and executed in the Google App Engine Cloud. You'll see the captcha image. This code would not have worked with a 'regular' App Engine instance!
 
-## Stage 2: Configure a Dockerfile for the Application ##
+## Stage 2-Configure a Dockerfile for the Application ##
 
 In Stage 2 of this application, we will to use the linux 'fortune' program to autofill in the guestbook entries with 'suggested text', in case a guest has a case of writer's block.  You'll find this version of the application in the `stage2` directory.
 
@@ -289,7 +308,7 @@ Deploy your application using the same instructions as above for the Stage 1 ver
 	
 The exact same Docker image that was used inside the development server has been pushed to the Google Cloud and is used in production.
 
-## Stage 3: Install Java 8 on Your Managed VM Instances ##
+## Stage 3-Install Java 8 on Your Managed VM Instances ##
 
 As a final stage of this tutorial, we will show how you can run your app using Java 8 (not yet supported on 'regular' App Engine instances), by adding additional commands to the app's `Dockerfile`.  You can find the code for this version of the app in the `stage3` directory.
 
@@ -340,12 +359,12 @@ The debug section of this document will not work.
 
 This tutorial walked through use of Managed VMs and the new gcloud SDK for a Java app, based on an extended version of the "guestbook" app. It showed how you can test Managed VMs locally, as well as deploy using the new SDK; and showed how to "escape the sandbox" and use a non-default `Dockerfile`.
 
+## Contributing changes
 
+* See [CONTRIBUTING](CONTRIBUTING.md)
 
+## Licensing
 
+* See [LICENSE](LICENSE)
 
-
-
-
-
-
+Copyright (C) 2014-2015 Google Inc.
