@@ -46,7 +46,7 @@ First, complete the following steps:
   - Other operating systems: [https://docs.docker.com/installation/](https://docs.docker.com/installation/)
 
   **Note: make sure your VirtualBox VM has 2Gb or RAM (or more). Otherwise, the Java runtime may have issues.**
-  
+
   It is a good idea to become familar with the Docker environment as the Managed VMs development environment and deployment environment in the Cloud is based on it. You can learn more at [https://www.docker.com/](https://www.docker.com/).
 - Download and install [the Beta build of the Google Cloud SDK](https://developers.google.com/cloud/sdk/#Quick_Start).
 - Install the Cloud SDK `app-engine-java` component:
@@ -79,13 +79,13 @@ Then, grab the starter code that we'll use for this tutorial, from this repo: [h
 
     $ git clone https://github.com/GoogleCloudPlatform/appengine-java-vm-guestbook-extras.git
     $ cd stage1
-    
+
 This app uses as its starting point the (familiar to many) App Engine "guestbook" sample, but some extras are added that highlight the capabilities of Managed VMs.  Here, we'll assume familiarity with the basic Guestbook app and plunge into the new stuff.
 
 The 3 stages shown in this tutorial are:
 
-| Stage  |Description           | 
-| ------- |-------------| 
+| Stage  |Description           |
+| ------- |-------------|
 | stage1 | Add a captcha library using AWT to the GuestBook application |
 | stage2 | Customize the Dockerfile to install a Linux native package and call it from Java, writing to the local file system |
 | stage3 | Upgrade the Docker image to use Java 8 and Lambas      |
@@ -123,7 +123,7 @@ Before running the app, take a quick look at the  [stage1/src/main/java/com/goog
 
 [stage1/src/main/webapp/guestbook.jsp](stage1/src/main/webapp/guestbook.jsp) displays the captcha image, and asks the user to type in the code.  [stage1/src/main/java/com/google/appengine/demos/guestbook/SignGuestbookServlet.java](stage1/src/main/java/com/google/appengine/demos/guestbook/SignGuestbookServlet.java) checks the submitted code against the value in the `Session`, and does not record the comment if the captcha code is incorrect.
 
-    
+
 #### Maven Deploy on Save ####
 The Maven project is configured to enable the fast "Deploy on Save" feature that IDEs like NetBeans, Eclipse, Android Studio or Intellij support. The Deploy on Save feature will recompile the Java files in place or update the Web Content, and the Google Cloud SDK will detect the file change and trigger automatically a build of a new Docker container with the updated application, allowing very fast development cycles. This is the preferred way of working for productive developers. Some features will not be supported, like for example, when you change some appengine-web.xml or if you add or modify a Servlet 3.1 annotations, but for most changes, it is the fastest way to see them live immediately.
 The trick for Deploy on Save is in the [stage1/pom.xml](stage1/pom.xml) file, regarding the `outputDirectory` setup.
@@ -131,11 +131,11 @@ The trick for Deploy on Save is in the [stage1/pom.xml](stage1/pom.xml) file, re
     <build>
       <!-- needed for enabling compile/reload on save in modern IDEs...-->
       <outputDirectory>target/${project.artifactId}-${project.version}/WEB-INF/classes
-      </outputDirectory> 
+      </outputDirectory>
      <plugins>
      ...
-     
-    
+
+
 ### Run Your Application Locally ###
 
 First, run the gcloud:run Maven target that will compile your project and start locally the development server and create the correct Docker container to execute your application:
@@ -147,11 +147,11 @@ If this does not work, it is possible that boot2docker is not up or not correctl
        <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>2.0.9.72.v20150804</version>
+        <version>2.0.9.74.v20150814</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
-          
+
 
 After some initialization steps (validation, build of the Docker image and execution of a Docker container that contains your application)
 
@@ -190,7 +190,7 @@ If you want to see the Docker container running, you can use the docker ps comma
     $ docker ps
     CONTAINER ID        IMAGE                                        COMMAND                CREATED             STATUS              PORTS                                             NAMES
     83a5c9b111da        your-app-id.default.20140714t152331:latest   "/home/vmagent/jetty   20 hours ago        Up 10 seconds       0.0.0.0:5005->5005/tcp, 0.0.0.0:49298->8080/tcp   google.appengine.your-app-id.default.20140714t152331.0.2014-07-14T152331.187386Z
-    
+
     # See the log of the running container:  
     $ docker logs 83a5c9b111da
     Info: Limiting Java heap size to: 1456M
@@ -198,20 +198,20 @@ If you want to see the Docker container running, you can use the docker ps comma
     Listening for transport dt_socket at address: 5005
     2014-07-14 18:26:32.293:INFO::main: Logging initialized @403ms
     2014-07-14 18:26:32.431:INFO::main: Redirecting stderr/stdout to /var/log/app_engine/STDERR.2014_07_14.log//var/log/app_engine/STDOUT.2014_07_14.log
-    
+
     # See the running local Dev Application Server:
     $ ps -aef | grep cloud-sdk
     python -S /Users/ludo/google-cloud-sdk/lib/googlecloudsdk/gcloud/gcloud.py --project=your-app-id preview app run /Users/ludo/a/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT
      ...
      # sometimes, the docker container is still running when you stop the development server from Intellij IDE. You can stop this docker container using its ID:
      $ docker stop 83a5c9b111da
-     
+
 As you see, you need to become familiar with the Docker system in terms of running, stopping or accessing the log of a container.
 
 **Note for IDE users**: If you are using NetBeans or Eclipse, you can stop the Cloud SDK run session with a click on the little RED icon that stop a process in the IDE terminal view. There is also a RED icon button in Android Studio and Intellij, but this one will not stop correctly the Cloud SDK: The docker containers will not be stopped and you need to stop them from the command line. You can instead execute the Maven command from CLI or the IDES to safely stop the running processes:
 
     $ mvn gcloud:run_stop
-    
+
 
 ### Deploy Your Application ###
 
@@ -263,22 +263,22 @@ As described above for Stage 1, build your app and run it locally:
 
 	# Via Maven:
 	$ mvn gcloud:run
-	
+
 
 This run is compiling the Maven project, processing the Servlet 3.1 annotations, then starts the development server that is building a Docker image and running it in the context of the boot2docker installation you have on you local machine. You should now see the guestbook entry field autofilled with a randomly-selected 'fortune'.
 
 Note: **the first time** you do a run, the Cloud SDK is building (and caching) the Docker image. This can take a *long time*, and the Beta SDK does not emit good notification yet. You'll see many lines like (sometimes for minutes or 10s of minutes if you Docker customization is accessing slow sites):
 
     INFO: Starting admin server at: http://localhost:8000
-    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 503 
-    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 503 
-    
+    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 503
+    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 503
+
 Be very **patient**. You can see the Docker build process and the necessary apt-get commands using the docker ps command. Subsequent builds and run are much faster as Docker caches the Docker image, and only the `ADD . /app` Dockerfile line is executed which is very fast.
 
-Remember you can see the log of the Docker container or see the container status using the Docker commands: 
-    
+Remember you can see the log of the Docker container or see the container status using the Docker commands:
+
     $ docker ps
-    # or 
+    # or
     $ docker logs <container ID>
 
 ### Enable a Java Debugger For Your Application Locally ###
@@ -290,7 +290,7 @@ The Java process running inside the Docker container can be configured to be deb
        <env-var name="DBG_ENABLE" value="1" />
        <env-var name="DBG_PORT" value="5005" />
      </env-variables>
-     
+
 The Cloud SDK will emit a message telling you to attach a JPDA dt_socket Java Debugger to 192.168.59.103 on port 5005, and you can debug inside the Docker container from your preferred IDE:
 
     ...
@@ -304,8 +304,8 @@ Deploy your application using the same instructions as above for the Stage 1 ver
 
 	# Via Maven:
 	$ mvn gcloud:deploy
-	
-	
+
+
 The exact same Docker image that was used inside the development server has been pushed to the Google Cloud and is used in production.
 
 ## Stage 3-Install Java 8 on Your Managed VM Instances ##
@@ -340,7 +340,7 @@ This time, when you visit your app, you should see at the top of the page an ind
 
 <img src="http://storage.googleapis.com/amy-jo/articles/java8_mvms.png" width="500" alt="Guestbook on Java 8"/>
 
-### Locally running without Docker 
+### Locally running without Docker
 
 It is now possible with the Cloud SDK to do a local execution of your application which is not using the Docker system. Instead of build your container and running it locally, the Cloud SDK will ignore the Dockerfile and execute a local Jetty 9 process. You can control this behaviour using the Maven configuration `non_docker_mode` and setting it to `true`:
 
@@ -352,9 +352,9 @@ It is now possible with the Cloud SDK to do a local execution of your applicatio
           <non_docker_mode>true</non_docker_mode>
         <configuration>
        </plugin>
-       
+
 The debug section of this document will not work.
-       
+
 ## Summary ##
 
 This tutorial walked through use of Managed VMs and the new gcloud SDK for a Java app, based on an extended version of the "guestbook" app. It showed how you can test Managed VMs locally, as well as deploy using the new SDK; and showed how to "escape the sandbox" and use a non-default `Dockerfile`.
