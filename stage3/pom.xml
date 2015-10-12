@@ -75,6 +75,17 @@
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
         <version>2.0.9.81.v20151008</version>
+        <!--configuration>
+          <custom_entrypoint>java
+            -Dgcloud.java.application=/Users/ludo/a/remove/appengine-java-vm-guestbook-extras/stage3/target/guestbook-stage3-1.0-SNAPSHOT
+            -Djetty.home=/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/java-managed-vm/appengine-java-vmruntime
+            -Djetty.base=/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/jetty-base-sdk 
+            -jar 
+            /Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/java-managed-vm/appengine-java-vmruntime/start.jar
+            -module=http
+            jetty.port={port}
+          </custom_entrypoint>
+         </configuration-->
       </plugin>
     </plugins>
   </build>

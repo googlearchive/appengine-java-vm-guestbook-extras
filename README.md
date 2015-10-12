@@ -232,6 +232,26 @@ You'll see an error:
 
 The Cloud SDK does not support anymore running custom runtimes when a Dockerfile is provided. You'll have to deploy the application to App Engine in the next section to see it running. 
 
+You can also specify a custom_entrypoint in your project pom.xml. This is an executable that the Cloud SDK will run to start your application locally. If you want to use the Cloud SDK bundled Jetty9 Web Server, you can define this entry point:
+
+          <custom_entrypoint>java
+            -Dgcloud.java.application=/Users/ludo/appengine-java-vm-guestbook-extras/stage3/target/guestbook-stage3-1.0-SNAPSHOT
+            -Djetty.home=/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/java-managed-vm/appengine-java-vmruntime
+            -Djetty.base=/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/jetty-base-sdk 
+            -jar 
+            /Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/java-managed-vm/appengine-java-vmruntime/start.jar
+            -module=http
+            jetty.port={port}
+          </custom_entrypoint>
+          
+Please make sure you replace the hard coded paths to your Maven project location for the `gcloud.java.application` property as well as the Cloud SDK location that contains the `jetty.home` and `jetty.base` directories. 
+
+The `{port}` value is automatically set by the Cloud SDK to the correct port Jetty should be listening to.
+This custom entry point basically tells the Cloud SDK to execute the Java Jett9 process witht the correct settings and with your exploded WAR directory located in the `target/guestbook-stage3-1.0-SNAPSHOT` directory. 
+
+You can of course put in the custom_entrypoint any process that would fit your custom execution environment.
+
+
 ### Deploy Your App ###
 
 Deploy your application using the same instructions as above for the Stage 1 version of the app:
