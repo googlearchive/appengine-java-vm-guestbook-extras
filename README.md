@@ -10,8 +10,8 @@ The code for this tutorial is here: [https://github.com/GoogleCloudPlatform/appe
 It includes several stages of a sample app.
 
 The first stage of the example shows how you can 'escape the App Engine sandbox' by using some Java libraries that don't run on App Engine.
-The second stage shows how you can edit a Managed VM module's `Dockerfile` to further configure its instances.  In this case, we'll install a linux utility, and also write to the instances' local filesystem.
-The third stage shows how you can install Java 8 on your Managed VM instance via `Dockerfile` config.
+The second stage shows how you can edit a Managed VM module's `Dockerfile` to further configure its instances.  In this case, we'll install a linux utility, and also write to the instances' local filesystem. We will also use the latest Jetty 9.3.2 runtime that needs the Open JDK8  JVM.
+
 
 ## Table of Contents
 * [Initial Setup](#Initial-Setup)
@@ -40,25 +40,6 @@ The third stage shows how you can install Java 8 on your Managed VM instance via
 First, complete the following steps:
 
 - [Create your project](https://developers.google.com/appengine/docs/managed-vms/) and have it enabled for Managed VMs.
-- Install Docker/boot2docker. Full instructions are provided on the Docker site for installing Docker on different operating systems.
-  - Mac OS X: [http://docs.docker.io/installation/mac/](http://docs.docker.io/installation/mac/)
-  - Windows: [http://docs.docker.io/installation/windows/](http://docs.docker.io/installation/windows/)
-  - Other operating systems: [https://docs.docker.com/installation/](https://docs.docker.com/installation/)
-
-  **Note: make sure your VirtualBox VM has 2Gb or RAM (or more). Otherwise, the Java runtime may have issues.**
-
-  It is a good idea to become familar with the Docker environment as the Managed VMs development environment and deployment environment in the Cloud is based on it. You can learn more at [https://www.docker.com/](https://www.docker.com/).
-- Download and install [the Beta build of the Google Cloud SDK](https://developers.google.com/cloud/sdk/#Quick_Start).
-- Install the Cloud SDK `app-engine-java` component:
-
-	    $ gcloud components list
-            $ gcloud components update app-engine-java
-            # Set the correct Cloud project
-            $ gcloud config set project YOUR_PROJECT
-            # This assumes that boot2docker is correctly configured, and up
-            $ boot2docker up
-            $ docker ps
-            # If the docker ps command issues an error, you are not ready to use the gcloud commands for Managed VM.
 
 ### Gcloud Authentication ###
 
@@ -82,19 +63,14 @@ Then, grab the starter code that we'll use for this tutorial, from this repo: [h
 
 This app uses as its starting point the (familiar to many) App Engine "guestbook" sample, but some extras are added that highlight the capabilities of Managed VMs.  Here, we'll assume familiarity with the basic Guestbook app and plunge into the new stuff.
 
-The 3 stages shown in this tutorial are:
+The 2 stages shown in this tutorial are:
 
 | Stage  |Description           |
 | ------- |-------------|
 | stage1 | Add a captcha library using AWT to the GuestBook application |
-| stage2 | Customize the Dockerfile to install a Linux native package and call it from Java, writing to the local file system |
-| stage3 | Upgrade the Docker image to use Java 8 and Lambas      |
+| stagebis | Customize the Dockerfile to install a Linux native package and call it from Java, writing to the local file system and uses Open JDK8 |
 
 All stages use Maven and Servlet 3.1 features, with Debug enabled, and are executed inside a Docker container on the local development server. The exact same Docker container will be running in production when your deploy your application.
-
-**Make sure that boot2docker is running** before starting the next steps.
-
-    $ boot2docker up
 
 
 ## Stage 1-Escape the Sandbox ##
@@ -142,12 +118,12 @@ First, run the gcloud:run Maven target that will compile your project and start 
 
 	$ mvn gcloud:run
 
-If this does not work, it is possible that boot2docker is not up or not correctly configured, or you did not install the Cloud SDK or it is not installed in the default location (under you home directory and the google-cloud-sdk/ directory). You can tell Maven a different location by changing the pom.xml and using the gcloud_directory parameter:
+If this does not work, it is possible that you did not install the Cloud SDK or it is not installed in the default location (under you home directory and the google-cloud-sdk/ directory). You can tell Maven a different location by changing the pom.xml and using the gcloud_directory parameter:
 
        <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>2.0.9.74.v20150814</version>
+        <version>2.0.9.81.v20151008</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
@@ -156,57 +132,48 @@ If this does not work, it is possible that boot2docker is not up or not correctl
 After some initialization steps (validation, build of the Docker image and execution of a Docker container that contains your application)
 
     ...
-    Running gcloud app run...
-    gcloud_directory was not set, so taking: /Users/ludo/google-cloud-sdk
-    Logging initialized @3281ms
-    Jul 14, 2014 8:19:37 AM com.google.appengine.gcloudapp.temp.AppEngineWebXmlReader readAppEngineWebXml
-    INFO: Successfully processed /Users/ludo/a/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT/WEB-INF/appengine-web.xml
-    Running python -S /Users/ludo/google-cloud-sdk/lib/googlecloudsdk/gcloud/gcloud.py --project=your-app-id preview app run /Users/ludo/a/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT
-    Java module found in [/Users/ludo/a/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT]
-    INFO: Looking for the Dockerfile in /Users/ludo/a/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT
-    INFO: Using Dockerfile found in /Users/ludo/a/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT
-    2014-07-14 15:19:39.066:INFO::main: Logging initialized @176ms
-    2014-07-14 15:19:41.471:WARN:oeja.AnnotationConfiguration:main: ServletContainerInitializers: detected. Class hierarchy: empty
-    INFO: No version specified. Generated version id: 20140714t151941
-    INFO: Skipping SDK update check.
-    INFO: Starting API server at: http://localhost:60946
-    INFO: Health checks starting for instance 0.
-    INFO: Starting module "default" running at: http://localhost:8080
-    INFO: Building image your-app-id.default.20141031t151941...
-    INFO: Starting admin server at: http://localhost:8000
-    INFO: Image your-app-id.default.20141031t151941 built, id = 2c30ea5f0bc3
-    INFO: Creating container...
-    INFO: Container 5babedab35cc22737076c8f673ba7b6d72910aa6fe7e67af49c5f4243a1c803d created.
-    INFO: To debug module default attach to 192.168.59.103:5005
-    INFO: default: "GET /_ah/start HTTP/1.1" 404 287
-    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 200 2
+		<<< gcloud-maven-plugin:2.0.9.81.v20151008:run (default-cli) < package @ guestbook-stage1
+		
+		--- gcloud-maven-plugin:2.0.9.81.v20151008:run (default-cli) @ guestbook-stage1 ---
+		
+		Running gcloud app run...
+		Creating staging directory in: /Users/ludo/appengine-java-vm-guestbook-extras/stage1/target/appengine-staging
+		Running appcfg --enable_quickstart --disable_update_check -A notused stage /Users/ludo/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT /Users/ludo/appengine-java-vm-guestbook-extras/stage1/target/appengine-staging
+		Reading application configuration data...
+		Oct 11, 2015 5:19:28 PM com.google.apphosting.utils.config.IndexesXmlReader readConfigXml
+		INFO: Successfully processed /Users/ludo/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT/WEB-INF/datastore-indexes.xml
+		
+		
+		Beginning interaction for module default...
+		Success.
+		Temporary staging for module default directory left in /Users/ludo/appengine-java-vm-guestbook-extras/stage1/target/appengine-staging
+		Running python -S /Users/ludo/google-cloud-sdk/platform/google_appengine/dev_appserver.py --skip_sdk_update_check=true -A app /Users/ludo/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT/app.yaml
+		INFO     2015-10-12 00:19:30,519 application_configuration.py:403] No version specified. Generated version id: 20151012t001930
+		INFO     2015-10-12 00:19:30,520 devappserver2.py:763] Skipping SDK update check.
+		INFO     2015-10-12 00:19:30,567 api_server.py:205] Starting API server at: http://localhost:50916
+		INFO     2015-10-12 00:19:30,576 dispatcher.py:197] Starting module "default" running at: http://localhost:8080
+		INFO     2015-10-12 00:19:30,584 admin_server.py:116] Starting admin server at: http://localhost:8000
+		2015-10-12 00:19:30.888:INFO::main: Logging initialized @293ms
+		2015-10-12 00:19:31.056:INFO:oejs.Server:main: jetty-9.2.10.v20150310
+		2015-10-12 00:19:31.068:WARN:oejsh.RequestLogHandler:main: !RequestLog
+		2015-10-12 00:19:31.070:INFO:oejdp.ScanningAppProvider:main: Deployment monitor [file:/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/jetty-base-sdk/contexts/] at interval 1
+		Oct 12, 2015 12:19:31 AM com.google.apphosting.vmruntime.VmMetadataCache getMetadata
+		INFO: Meta-data 'attributes/gae_affinity' path retrieval error: metadata
+		Oct 12, 2015 12:19:31 AM com.google.apphosting.vmruntime.VmMetadataCache getMetadata
+		INFO: Meta-data 'attributes/gae_appengine_hostname' path retrieval error: metadata
+		Oct 12, 2015 12:19:31 AM com.google.apphosting.vmruntime.VmMetadataCache getMetadata
+		INFO: Meta-data 'attributes/gae_use_nginx_proxy' path retrieval error: metadata
+		Oct 12, 2015 12:19:31 AM com.google.apphosting.vmruntime.VmMetadataCache getMetadata
+		INFO: Meta-data 'attributes/gae_tmp_force_reuse_api_connection' path retrieval error: metadata
+		2015-10-12 00:19:31.625:INFO:oejsh.ContextHandler:main: Started c.g.a.v.j.VmRuntimeWebAppContext@6ce139a4{/,file:/Users/ludo/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT/,AVAILABLE}{/Users/ludo/a/remove/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT}
+		2015-10-12 00:19:31.638:INFO:oejs.ServerConnector:main: Started ServerConnector@489115ef{HTTP/1.1}{0.0.0.0:35807}
+		INFO     2015-10-12 00:19:32,594 module.py:1735] New instance for module "default" serving on:
+    http://localhost:8080
 
 you can visit the URL that the development server is running on (likely: [http://localhost:8080](http://localhost:8080)). You should see a figure that looks like the following. The application is the (probably all-too-familiar) guestbook app, but with a 'captcha' image and field added.  You must type in the captcha word correctly for the entry to be posted.
 
 <img src="http://storage.googleapis.com/amy-jo/articles/gb_captcha_local.png" width="500" alt="Guestbook with Captcha"/>
 
-If you want to see the Docker container running, you can use the docker ps command:
-
-    $ docker ps
-    CONTAINER ID        IMAGE                                        COMMAND                CREATED             STATUS              PORTS                                             NAMES
-    83a5c9b111da        your-app-id.default.20140714t152331:latest   "/home/vmagent/jetty   20 hours ago        Up 10 seconds       0.0.0.0:5005->5005/tcp, 0.0.0.0:49298->8080/tcp   google.appengine.your-app-id.default.20140714t152331.0.2014-07-14T152331.187386Z
-
-    # See the log of the running container:  
-    $ docker logs 83a5c9b111da
-    Info: Limiting Java heap size to: 1456M
-    Running locally and DBG_ENABLE is set, enabling standard Java debugger agent
-    Listening for transport dt_socket at address: 5005
-    2014-07-14 18:26:32.293:INFO::main: Logging initialized @403ms
-    2014-07-14 18:26:32.431:INFO::main: Redirecting stderr/stdout to /var/log/app_engine/STDERR.2014_07_14.log//var/log/app_engine/STDOUT.2014_07_14.log
-
-    # See the running local Dev Application Server:
-    $ ps -aef | grep cloud-sdk
-    python -S /Users/ludo/google-cloud-sdk/lib/googlecloudsdk/gcloud/gcloud.py --project=your-app-id preview app run /Users/ludo/a/appengine-java-vm-guestbook-extras/stage1/target/guestbook-stage1-1.0-SNAPSHOT
-     ...
-     # sometimes, the docker container is still running when you stop the development server from Intellij IDE. You can stop this docker container using its ID:
-     $ docker stop 83a5c9b111da
-
-As you see, you need to become familiar with the Docker system in terms of running, stopping or accessing the log of a container.
 
 **Note for IDE users**: If you are using NetBeans or Eclipse, you can stop the Cloud SDK run session with a click on the little RED icon that stop a process in the IDE terminal view. There is also a RED icon button in Android Studio and Intellij, but this one will not stop correctly the Cloud SDK: The docker containers will not be stopped and you need to stop them from the command line. You can instead execute the Maven command from CLI or the IDES to safely stop the running processes:
 
@@ -232,28 +199,30 @@ This deployment is using the 'default'  `Dockerfile`, which you can see in the `
 
 
 After deployment, go to your app: http://YOUR-APP-ID.appspot.com.
-The app should work the same as it did with the local development server, because it is the same Docker container that you ran locally in the development server that is deployed and executed in the Google App Engine Cloud. You'll see the captcha image. This code would not have worked with a 'regular' App Engine instance!
+The app should work the same as it did with the local development server. This code would not have worked with a 'regular' App Engine instance!
 
-## Stage 2-Configure a Dockerfile for the Application ##
+## Stage bis-Configure a Dockerfile for the Application ##
 
-In Stage 2 of this application, we will to use the linux 'fortune' program to autofill in the guestbook entries with 'suggested text', in case a guest has a case of writer's block.  You'll find this version of the application in the `stage2` directory.
-
+In Stage bis (stage3 directory) of this application, we will upgrade the JVM to Open JDK8 and use the linux 'fortune' program to autofill in the guestbook entries with 'suggested text', in case a guest has a case of writer's block.
 These changes involve a couple of new things.
 
 First, we need to install the 'fortune' program on our Managed VM instances, so that we can access it. We will do this by defining a `Dockerfile` for the app.
-Then, we will define a new class (called [stage2/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java](stage2/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java)), that will execute this program, save the results to a new file, then read the file and serve up the results.
+Then, we will define a new class (called [stage3/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java](stage3/src/main/java/com/google/appengine/demos/guestbook/FortuneInfo.java)), that will execute this program, save the results to a new file, then read the file and serve up the results.
 Take a quick look at `FortuneInfo.java`.  Both the use of `ProcessBuilder`, and the capability of writing temporary files to the local filesystem, would not work on 'regular' App Engine instances.
 
 <img src="http://storage.googleapis.com/amy-jo/articles/gb_captcha_local2.png" width="500" alt="Guestbook with Fortunes"/>
 
-Take a look at the [stage2/src/main/webapp/Dockerfile](stage2/src/main/webapp/Dockerfile) file:
+Take a look at the [stage3/src/main/webapp/Dockerfile](stage3/src/main/webapp/Dockerfile) file:
 It looks like this:
 
-	FROM gcr.io/google_appengine/java-compat
-    RUN apt-get update && apt-get install -y fortunes
-	ADD . /app
+     #jetty9-compat is Jetty 9.3.2 and support only Open JDK8:
+     FROM gcr.io/_b_jenkins_images/jetty9-compat:0.1
+     RUN apt-get update && apt-get install -y fortunes
 
-The file indicates to: start with the default java runtime docker image, and add to it an installation of the 'fortunes' program.
+     ADD . /app
+
+
+The file indicates to: start with the default java8 runtime docker image, and add to it an installation of the 'fortunes' program.
 
 Build your app, via `mvn package`.
 
@@ -265,38 +234,26 @@ As described above for Stage 1, build your app and run it locally:
 	$ mvn gcloud:run
 
 
-This run is compiling the Maven project, processing the Servlet 3.1 annotations, then starts the development server that is building a Docker image and running it in the context of the boot2docker installation you have on you local machine. You should now see the guestbook entry field autofilled with a randomly-selected 'fortune'.
+You'll see an error: 
 
-Note: **the first time** you do a run, the Cloud SDK is building (and caching) the Docker image. This can take a *long time*, and the Beta SDK does not emit good notification yet. You'll see many lines like (sometimes for minutes or 10s of minutes if you Docker customization is accessing slow sites):
+		  File "/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/devappserver2/devappserver2.py", line 1026, in main
+		    dev_server.start(options)
+		  File "/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/devappserver2/devappserver2.py", line 818, in start
+		    self._dispatcher.start(options.api_host, apis.port, request_data)
+		  File "/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/devappserver2/dispatcher.py", line 194, in start
+		    _module.start()
+		  File "/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/devappserver2/module.py", line 1554, in start
+		    self._add_instance()
+		  File "/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/devappserver2/module.py", line 1706, in _add_instance
+		    expect_ready_request=True)
+		  File "/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/devappserver2/custom_runtime.py", line 73, in new_instance
+		    assert self._runtime_config_getter().custom_config.custom_entrypoint
+		  File "/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/devappserver2/module.py", line 382, in _get_runtime_config
+		    raise ValueError('The --custom_entrypoint flag must be set for '
+		ValueError: The --custom_entrypoint flag must be set for custom runtimes
 
-    INFO: Starting admin server at: http://localhost:8000
-    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 503
-    INFO: default: "GET /_ah/health?IsLastSuccessful=no HTTP/1.1" 503
 
-Be very **patient**. You can see the Docker build process and the necessary apt-get commands using the docker ps command. Subsequent builds and run are much faster as Docker caches the Docker image, and only the `ADD . /app` Dockerfile line is executed which is very fast.
-
-Remember you can see the log of the Docker container or see the container status using the Docker commands:
-
-    $ docker ps
-    # or
-    $ docker logs <container ID>
-
-### Enable a Java Debugger For Your Application Locally ###
-
-The Java process running inside the Docker container can be configured to be debugged. See in the [stage2/src/main/webapp/WEB-INF/appengine-web.xml](stage2/src/main/webapp/WEB-INF/appengine-web.xml) file the environment variable settings DBG_ENABLE and DBG_PORT (default value is 5005):
-
-     <!-- for enabling Java debugging in the container: -->
-     <env-variables>
-       <env-var name="DBG_ENABLE" value="1" />
-       <env-var name="DBG_PORT" value="5005" />
-     </env-variables>
-
-The Cloud SDK will emit a message telling you to attach a JPDA dt_socket Java Debugger to 192.168.59.103 on port 5005, and you can debug inside the Docker container from your preferred IDE:
-
-    ...
-    INFO: To debug module default attach to 192.168.59.103:5005
-    ...
-
+The Cloud SDK does not support anymore running custom runtimes when a Dockerfile is provided. You'll have to deploy the application to App Engine in the next section to see it running. 
 
 ### Deploy Your App ###
 
@@ -305,55 +262,6 @@ Deploy your application using the same instructions as above for the Stage 1 ver
 	# Via Maven:
 	$ mvn gcloud:deploy
 
-
-The exact same Docker image that was used inside the development server has been pushed to the Google Cloud and is used in production.
-
-## Stage 3-Install Java 8 on Your Managed VM Instances ##
-
-As a final stage of this tutorial, we will show how you can run your app using Java 8 (not yet supported on 'regular' App Engine instances), by adding additional commands to the app's `Dockerfile`.  You can find the code for this version of the app in the `stage3` directory.
-
-First, edit your [stage3/src/main/webapp/Dockerfile](stage3/src/main/webapp/Dockerfile) file to look like the following.
-
-	FROM gcr.io/google_appengine/java-compat
-	RUN apt-get update && apt-get install -y fortunes
-	# Install java8
-	RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
-	RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
-	RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-	RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
-	RUN apt-get update
-	RUN apt-get install -y oracle-java8-installer
-
-    ADD . /app
-
-
-Then, [stage3/src/main/webapp/guestbook.jsp](stage3/src/main/webapp/guestbook.jsp) has been modified to grab the Java version from the system properties, and print it at the top of the page.
-
-### Local Testing and Deployment ###
-
-The local testing and deployment process is the same as above, except that you need to make sure you have installed a local JDK 8 on your development machine, so that the Maven build can invoke the Java 8 compiler needed to compile your application code before it is added to the Docker image. Maven will look for the JAVA_HOME environment variable so make sure it points to the correct JDK, for example, on a Mac:
-
-     $ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home
-
-
-This time, when you visit your app, you should see at the top of the page an indication of the java version you're running.  It should look something like the figure below.
-
-<img src="http://storage.googleapis.com/amy-jo/articles/java8_mvms.png" width="500" alt="Guestbook on Java 8"/>
-
-### Locally running without Docker
-
-It is now possible with the Cloud SDK to do a local execution of your application which is not using the Docker system. Instead of build your container and running it locally, the Cloud SDK will ignore the Dockerfile and execute a local Jetty 9 process. You can control this behaviour using the Maven configuration `non_docker_mode` and setting it to `true`:
-
-       <plugin>
-        <groupId>com.google.appengine</groupId>
-        <artifactId>gcloud-maven-plugin</artifactId>
-        <version>....</version>
-        <configuration>
-          <non_docker_mode>true</non_docker_mode>
-        <configuration>
-       </plugin>
-
-The debug section of this document will not work.
 
 ## Summary ##
 
