@@ -12,29 +12,6 @@ It includes several stages of a sample app.
 The first stage of the example shows how you can 'escape the App Engine sandbox' by using some Java libraries that don't run on App Engine.
 The second stage shows how you can edit a Managed VM module's `Dockerfile` to further configure its instances.  In this case, we'll install a linux utility, and also write to the instances' local filesystem. We will also use the latest Jetty 9.3.2 runtime that needs the Open JDK8  JVM.
 
-
-## Table of Contents
-* [Initial Setup](#Initial-Setup)
-  * [Gcloud Authentication](#Gcloud-Authentication)
-  * [Install Maven and Git](#Install-Maven-and-Git)
-  * [Grab the Sample Code](#Grab-the-Sample-Code)
-* [Stage 1-Escape the Sandbox](#Stage-1-Escape-the-Sandbox)
-  * [Maven Deploy on Save](#Maven-Deploy-on-Save)
-  * [Run Your Application Locally](#Run-Your-Application-Locally)
-  * [Deploy Your Application](#Deploy-Your-Application)
-* [Stage 2-Configure a Dockerfile for the Application](#Stage-2-Configure-a-Dockerfil-for-the-Application)
-  * [Run Your Application Locally](#Run-Your-Application-Locally)
-  * [Enable a Java Debugger For Your Application Locally](#Enable-a-Java-Debugger-For-Your-Application-Locally)
-  * [Deploy Your App](#Deploy-Your-App)
-* [Stage 3-Install Java 8 on Your Managed VM Instances](#Stage-3-Install-Java-8-on-Your-Managed-VM-Instances)
-  * [Local Testing and Deployment](#Local-Testing-and-Deployment)
-  * [Locally running without Docker](#Locally-running-without-Docker)
-* [Summary](#Summary)
-* [Contributing changes](#Contributing-changes)
-* [Licensing](#Licensing)
-
-
-
 ## Initial Setup ##
 
 First, complete the following steps:
