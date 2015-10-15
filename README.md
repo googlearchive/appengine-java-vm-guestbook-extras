@@ -237,7 +237,8 @@ You can also specify a custom_entrypoint in your project pom.xml. This is an exe
           <custom_entrypoint>java
             -Dgcloud.java.application=/Users/ludo/appengine-java-vm-guestbook-extras/stage3/target/guestbook-stage3-1.0-SNAPSHOT
             -Djetty.home=/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/java-managed-vm/appengine-java-vmruntime
-            -Djetty.base=/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/jetty-base-sdk 
+            -Djetty.base=/Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/jetty-base-sdk
+            -Dcom.google.apphosting.vmruntime.VmRuntimeFileLogHandler.pattern=/SOMEWRITABLEDIR/log.%g
             -jar 
             /Users/ludo/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/lib/java-managed-vm/appengine-java-vmruntime/start.jar
             -module=http
