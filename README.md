@@ -100,7 +100,7 @@ If this does not work, it is possible that you did not install the Cloud SDK or 
        <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>2.0.9.81.v20151008</version>
+        <version>2.0.9.88.v20151125</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
@@ -193,7 +193,7 @@ Take a look at the [stage3/src/main/webapp/Dockerfile](stage3/src/main/webapp/Do
 It looks like this:
 
      #jetty9-compat is Jetty 9.3.2 and support only Open JDK8:
-     FROM gcr.io/_b_jenkins_images/jetty9-compat:0.1
+     FROM gcr.io/google_appengine/jetty9-compat
      RUN apt-get update && apt-get install -y fortunes
 
      ADD . /app
