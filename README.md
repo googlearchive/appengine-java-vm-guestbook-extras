@@ -229,9 +229,6 @@ You'll see an error:
 		    raise ValueError('The --custom_entrypoint flag must be set for '
 		ValueError: The --custom_entrypoint flag must be set for custom runtimes
 
-
-The Cloud SDK does not support anymore running custom runtimes when a Dockerfile is provided. You'll have to deploy the application to App Engine in the next section to see it running. 
-
 You can also specify a custom_entrypoint in your project pom.xml. This is an executable that the Cloud SDK will run to start your application locally. If you want to use the Cloud SDK bundled Jetty9 Web Server, you can define this entry point:
 
           <custom_entrypoint>java
