@@ -100,7 +100,7 @@ If this does not work, it is possible that you did not install the Cloud SDK or 
        <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>2.0.9.88.v20151125</version>
+        <version>2.0.9.90.v20151210</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
@@ -192,7 +192,7 @@ Take a quick look at `FortuneInfo.java`.  Both the use of `ProcessBuilder`, and 
 Take a look at the [stage3/src/main/webapp/Dockerfile](stage3/src/main/webapp/Dockerfile) file:
 It looks like this:
 
-     #jetty9-compat is Jetty 9.3.2 and support only Open JDK8:
+     #jetty9-compat is Jetty 9.3.6 and supports only Open JDK8:
      FROM gcr.io/google_appengine/jetty9-compat
      RUN apt-get update && apt-get install -y fortunes
 
