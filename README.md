@@ -165,7 +165,7 @@ First, set the project you're using with `gcloud`:
 
 	$ gcloud config set project <your-project>
 
-Make sure that you're using a Managed-VMs-enabled app, ins [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml).  Then do:
+Make sure that you're using a Managed-VMs-enabled app, in [stage1/src/main/webapp/WEB-INF/appengine-web.xml](stage1/src/main/webapp/WEB-INF/appengine-web.xml), you have set `<vm>true</vm>`.  Then do:
 
 	$ mvn gcloud:deploy
 
