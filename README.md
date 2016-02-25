@@ -100,7 +100,7 @@ If this does not work, it is possible that you did not install the Cloud SDK or 
        <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>2.0.9.90.v20151210</version>
+        <version>2.0.9.95.v20160203</version>
         <configuration>
           <gcloud_directory>/YOUR/OWN/GCLOUD/INSTALLATION/DIR</gcloud_directory>
           ...
