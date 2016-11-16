@@ -1,3 +1,12 @@
+![status: inactive](https://img.shields.io/badge/status-inactive-red.svg)
+
+This project is no longer actively developed or maintained. Managed VMs have
+become [App Engine Flexible](https://cloud.google.com/appengine/docs/flexible/java).
+
+For new work on App Engine Flexible look at
+https://github.com/GoogleCloudPlatform/java-docs-samples/tree/master/flexible
+
+
 # Java Managed VMs Tutorial
 
 
